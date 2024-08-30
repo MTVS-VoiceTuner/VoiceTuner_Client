@@ -5,6 +5,8 @@
 #include "HttpModule.h"
 #include "JsonParseLib.h"
 #include "LoginUI.h"
+#include "Misc/Paths.h"
+#include "HAL/PlatformProcess.h"
 
 // Sets default values
 AHttpActor::AHttpActor()
@@ -61,6 +63,20 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
+	}
+}
+
+void AHttpActor::OpenKakaoLoginPage()
+{
+	FString URL = " https://kauth.kakao.com/oauth/authorize(client_id=${92b3e5f16e982fe5395ba97c4bdf34f0}, redirect_uri=${localhost:8080/login/kakao}, response_type='code'";
+	FString ErrorMessage;
+
+	// 기본 웹 브라우저에서 URL 열기
+	FPlatformProcess::LaunchURL(*URL , nullptr , &ErrorMessage);
+
+	if ( !ErrorMessage.IsEmpty() )
+	{
+		UE_LOG(LogTemp , Warning , TEXT("Failed to launch URL: %s") , *ErrorMessage);
 	}
 }
 

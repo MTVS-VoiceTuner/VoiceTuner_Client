@@ -36,6 +36,8 @@ public:
 
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
+	void OpenKakaoLoginPage();
+
 	FString serverURL = "http://localhost:8080/login/kakao";
 	FString token;
 };
