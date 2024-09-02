@@ -38,6 +38,10 @@ public:
 
 	void OpenKakaoLoginPage();
 
+	void SendSoundFileToServer();
+
+	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+
 	FString serverURL = "http://localhost:8080/login/kakao";
 	FString token;
 };

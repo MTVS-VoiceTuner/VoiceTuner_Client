@@ -80,3 +80,41 @@ void AHttpActor::OpenKakaoLoginPage()
 	}
 }
 
+void AHttpActor::SendSoundFileToServer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("SendGradingDataToServer"));
+	TArray<uint8> FileData;
+	FString FilePath = FPaths::ProjectContentDir() + TEXT("/Sound/Report.wav");
+
+	if (FFileHelper::LoadFileToArray(FileData, *FilePath))
+	{
+		UE_LOG(LogTemp, Log, TEXT("File loaded successfully: %s"), *FilePath);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
+		return;
+	}
+	FString En_SoundFile = FBase64::Encode(FileData);
+
+	FHttpModule& httpModule = FHttpModule::Get();
+	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
+
+	req->SetURL(serverURL);
+	req->SetVerb("POST");
+	req->SetHeader(TEXT("User-Agent"), "UnrealEngine/5.0");
+	req->SetHeader(TEXT("token"), FString::Printf(TEXT("%s"), *token));
+	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
+	req->SetContentAsString(En_SoundFile);
+
+	req->OnProcessRequestComplete().BindUObject(this, &AHttpActor::ResSendSoundFileToServer);
+
+	req->ProcessRequest();
+}
+
+void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
+{
+}
+
+
+
