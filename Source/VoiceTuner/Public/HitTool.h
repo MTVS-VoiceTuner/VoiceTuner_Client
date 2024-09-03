@@ -16,6 +16,8 @@ UCLASS()
 class VOICETUNER_API AHitTool : public AActor
 {
 	GENERATED_BODY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Root, meta = (AllowPrivateAccess = "true"))
+	USceneComponent* Root;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* HitCollision;

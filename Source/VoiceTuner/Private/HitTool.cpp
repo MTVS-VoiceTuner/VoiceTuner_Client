@@ -14,8 +14,11 @@ AHitTool::AHitTool()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetRootComponent(Root);
+
 	HitCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Collision"));
-	SetRootComponent(HitCollision);
+	HitCollision -> SetupAttachment(RootComponent);
 	HitCollision -> SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
 	HitCollision -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
