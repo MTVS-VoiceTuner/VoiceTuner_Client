@@ -48,7 +48,7 @@ void AHttpActor::LoginRequest()
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
 	req->SetURL(serverURL);
-	req->SetVerb(TEXT("POST"));
+	req->SetVerb(TEXT("GET"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 
 	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResLoginRequest);
@@ -68,10 +68,9 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 
 void AHttpActor::OpenKakaoLoginPage()
 {
-	FString URL = " https://kauth.kakao.com/oauth/authorize(client_id=${92b3e5f16e982fe5395ba97c4bdf34f0}, redirect_uri=${localhost:8080/login/kakao}, response_type='code'";
+	FString URL = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=92b3e5f16e982fe5395ba97c4bdf34f0&redirect_uri=http://192.168.0.25:8080/api/auth/kakao/login";
 	FString ErrorMessage;
 
-	// 기본 웹 브라우저에서 URL 열기
 	FPlatformProcess::LaunchURL(*URL , nullptr , &ErrorMessage);
 
 	if ( !ErrorMessage.IsEmpty() )
@@ -114,6 +113,7 @@ void AHttpActor::SendSoundFileToServer()
 
 void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
+	
 }
 
 

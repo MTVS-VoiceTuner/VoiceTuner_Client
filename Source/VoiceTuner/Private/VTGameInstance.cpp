@@ -8,7 +8,6 @@ void UVTGameInstance::Init()
 	Super::Init();
 
 	FCoreDelegates::ApplicationReceivedStartupArgumentsDelegate.AddUObject(this , &UVTGameInstance::HandleURL);
-
 }
 
 FString UVTGameInstance::GenerateTokenCallbackURL()

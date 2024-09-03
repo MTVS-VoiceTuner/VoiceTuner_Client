@@ -31,7 +31,6 @@ public:
 	UPROPERTY()
 	class ULoginUI* LoginUI;
 
-
 	void LoginRequest();
 
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
@@ -42,6 +41,6 @@ public:
 
 	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
-	FString serverURL = "http://localhost:8080/login/kakao";
+	FString serverURL = "http://221.163.19.218:8080/ap";
 	FString token;
 };

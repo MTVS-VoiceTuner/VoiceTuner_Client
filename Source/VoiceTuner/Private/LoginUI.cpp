@@ -13,6 +13,7 @@ void ULoginUI::NativeConstruct()
 void ULoginUI::OnMyButtonClicked()
 {
 	HttpActor->OpenKakaoLoginPage();
+	HttpActor->LoginRequest();
 	RemoveFromParent();
 }
 
