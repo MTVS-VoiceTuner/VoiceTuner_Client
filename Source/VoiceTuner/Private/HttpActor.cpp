@@ -60,22 +60,11 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 {
 	if ( bConnectedSuccessfully ) {
 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
+		LoginUI->RemoveFromParent();
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
-	}
-}
 
-void AHttpActor::OpenKakaoLoginPage()
-{
-	FString URL = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=92b3e5f16e982fe5395ba97c4bdf34f0&redirect_uri=http://192.168.0.25:8080/api/auth/kakao/login";
-	FString ErrorMessage;
-
-	FPlatformProcess::LaunchURL(*URL , nullptr , &ErrorMessage);
-
-	if ( !ErrorMessage.IsEmpty() )
-	{
-		UE_LOG(LogTemp , Warning , TEXT("Failed to launch URL: %s") , *ErrorMessage);
 	}
 }
 
@@ -113,7 +102,12 @@ void AHttpActor::SendSoundFileToServer()
 
 void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
-	
+	if ( bConnectedSuccessfully ) {
+
+	}
+	else {
+
+	}
 }
 
 

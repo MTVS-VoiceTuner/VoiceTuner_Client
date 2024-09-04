@@ -25,4 +25,6 @@ public:
 
 	UPROPERTY()
 	class AHttpActor* HttpActor;
+
+	void OpenKakaoLoginPage();
 };
