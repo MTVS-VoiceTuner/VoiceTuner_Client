@@ -21,14 +21,6 @@
 			"TargetAllowList": [
 				"Editor"
 			]
-		},
-		{
-			"Name": "ScreenCreator",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgame.launcher://ue/marketplace/product/433aecece72048e29f464a74cab95f34",
-			"SupportedTargetPlatforms": [
-				"Win64"
-			]
 		}
 	]
 }
