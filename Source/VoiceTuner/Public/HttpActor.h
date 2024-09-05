@@ -31,14 +31,22 @@ public:
 	UPROPERTY()
 	class ULoginUI* LoginUI;
 
-	void LoginRequest();
+	void LoginRequest(FString id, FString pwd);
 
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
 	void SendSoundFileToServer();
 
-	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully); 
 
-	FString serverURL = "http://221.163.19.218:8080/ap";
+ 	void SendOriginSoundFileToServer();
+ 
+ 	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+
+	FString myID = "shinhonggyu";
+	FString myPwd;
+	FString serverURL = "http://192.168.0.25:8080/sendBase64";
 	FString token;
+	FString song_id = "Sinhodeong";
+	FString track_id = "1st";
 };

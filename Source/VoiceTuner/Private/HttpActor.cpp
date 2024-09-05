@@ -42,14 +42,18 @@ void AHttpActor::Tick(float DeltaTime)
 
 }
 
-void AHttpActor::LoginRequest()
+void AHttpActor::LoginRequest(FString id,FString pwd)
 {
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
+	myID = id;
+	myPwd = pwd;
+
 	req->SetURL(serverURL);
 	req->SetVerb(TEXT("GET"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
+	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id,pwd));
 
 	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResLoginRequest);
 
@@ -72,7 +76,7 @@ void AHttpActor::SendSoundFileToServer()
 {
 	UE_LOG(LogTemp, Warning, TEXT("SendGradingDataToServer"));
 	TArray<uint8> FileData;
-	FString FilePath = FPaths::ProjectContentDir() + TEXT("/Sound/Report.wav");
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong_CUT.wav");
 
 	if (FFileHelper::LoadFileToArray(FileData, *FilePath))
 	{
@@ -83,6 +87,7 @@ void AHttpActor::SendSoundFileToServer()
 		UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
 		return;
 	}
+
 	FString En_SoundFile = FBase64::Encode(FileData);
 
 	FHttpModule& httpModule = FHttpModule::Get();
@@ -93,7 +98,7 @@ void AHttpActor::SendSoundFileToServer()
 	req->SetHeader(TEXT("User-Agent"), "UnrealEngine/5.0");
 	req->SetHeader(TEXT("token"), FString::Printf(TEXT("%s"), *token));
 	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
-	req->SetContentAsString(En_SoundFile);
+	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID,FString::Printf(TEXT("%s"),*song_id) , FString::Printf(TEXT("%s") , *track_id) , 1.0 , 1.0 , En_SoundFile));
 
 	req->OnProcessRequestComplete().BindUObject(this, &AHttpActor::ResSendSoundFileToServer);
 
@@ -103,10 +108,51 @@ void AHttpActor::SendSoundFileToServer()
 void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
 	if ( bConnectedSuccessfully ) {
+		UE_LOG(LogTemp,Warning,TEXT("%s"), *UJsonParseLib::ReturnJsonParse(Response->GetContentAsString()));
 
 	}
 	else {
+		UE_LOG(LogTemp , Warning , TEXT("Failed"));
+	}
+}
 
+void AHttpActor::SendOriginSoundFileToServer()
+{
+	TArray<uint8> FileData;
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong.wav");
+	if ( !FFileHelper::LoadFileToArray(FileData , *FilePath) )
+	{
+		UE_LOG(LogTemp , Error , TEXT("Failed to load file: %s") , *FilePath);
+		return;
+	}
+	else {
+		UE_LOG(LogTemp , Verbose , TEXT("Successed to load file: %s") , *FilePath);
+	}
+
+	FHttpModule& httpModule = FHttpModule::Get();
+	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
+
+	req->SetURL("http://192.168.0.25:8080/ppt/compare_similarity");
+	req->SetVerb("POST");
+	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
+	req->SetHeader(TEXT("token") , FString::Printf(TEXT("%s") , *token));
+	req->SetHeader(TEXT("content-type") , TEXT("multipart/form-data"));
+	req->SetContent(FileData);
+
+	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
+
+	req->ProcessRequest();
+	UE_LOG(LogTemp , Warning , TEXT("SendOriginSoundFileToServer(), ProcessRequest()"));
+}
+
+void AHttpActor::ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
+{
+	if ( bConnectedSuccessfully ) {
+		UE_LOG(LogTemp , Warning , TEXT("%s") , *UJsonParseLib::ReturnJsonParse(Response->GetContentAsString()));
+
+	}
+	else {
+		UE_LOG(LogTemp , Warning , TEXT("Failed"));
 	}
 }
 

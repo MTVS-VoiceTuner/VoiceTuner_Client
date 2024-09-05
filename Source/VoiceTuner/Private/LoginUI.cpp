@@ -4,28 +4,39 @@
 #include "LoginUI.h"
 #include "Components/Button.h"
 #include "HttpActor.h"
+#include "Components/EditableText.h"
+#include "Kismet/GameplayStatics.h"
 
 void ULoginUI::NativeConstruct()
 {
+	HttpActor = Cast<AHttpActor>(UGameplayStatics::GetActorOfClass(GetWorld(), HAFactory));
+
 	LoginButton->OnClicked.AddDynamic(this,&ULoginUI::OnMyButtonClicked);
+
+	UserIdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyIDCommitted);
+
+	UserPwdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyPwdCommitted);
 }
 
 void ULoginUI::OnMyButtonClicked()
 {
-	OpenKakaoLoginPage();
-	HttpActor->LoginRequest();
+	HttpActor->SendOriginSoundFileToServer();
 }
 
-void ULoginUI::OpenKakaoLoginPage()
+void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)
 {
-	FString URL = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=92b3e5f16e982fe5395ba97c4bdf34f0&redirect_uri=http://192.168.0.25:8080/api/auth/kakao/login";
-	FString ErrorMessage;
-
-	FPlatformProcess::LaunchURL(*URL , nullptr , &ErrorMessage);
-
-	if ( !ErrorMessage.IsEmpty() )
+	if ( CommitMethod == ETextCommit::OnEnter || CommitMethod == ETextCommit::OnUserMovedFocus )
 	{
-		UE_LOG(LogTemp , Warning , TEXT("Failed to launch URL: %s") , *ErrorMessage);
+		id = Text.ToString();
+		UE_LOG(LogTemp , Log , TEXT("User ID: %s") , *id);
 	}
 }
 
+void ULoginUI::OnMyPwdCommitted(const FText& Text , ETextCommit::Type CommitMethod)
+{
+	if ( CommitMethod == ETextCommit::OnEnter || CommitMethod == ETextCommit::OnUserMovedFocus )
+	{
+		pwd = Text.ToString();
+		UE_LOG(LogTemp , Log , TEXT("User ID: %s") , *pwd);
+	}
+}
