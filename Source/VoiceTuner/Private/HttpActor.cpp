@@ -42,14 +42,18 @@ void AHttpActor::Tick(float DeltaTime)
 
 }
 
-void AHttpActor::LoginRequest()
+void AHttpActor::LoginRequest(FString id,FString pwd)
 {
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL(serverURL);
+	myID = id;
+	myPwd = pwd;
+
+	req->SetURL("http://221.163.19.218:8080/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
+	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id,pwd));
 
 	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResLoginRequest);
 
@@ -60,23 +64,17 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 {
 	if ( bConnectedSuccessfully ) {
 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
+		LoginUI->RemoveFromParent(); 
+		auto* pc = GetWorld()->GetFirstPlayerController();
+		if ( pc ) {
+			pc->bShowMouseCursor = false;
+
+			FInputModeGameOnly InputMode;
+			pc->SetInputMode(InputMode);
+		}
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
-	}
-}
-
-void AHttpActor::OpenKakaoLoginPage()
-{
-	FString URL = " https://kauth.kakao.com/oauth/authorize(client_id=${92b3e5f16e982fe5395ba97c4bdf34f0}, redirect_uri=${localhost:8080/login/kakao}, response_type='code'";
-	FString ErrorMessage;
-
-	// 기본 웹 브라우저에서 URL 열기
-	FPlatformProcess::LaunchURL(*URL , nullptr , &ErrorMessage);
-
-	if ( !ErrorMessage.IsEmpty() )
-	{
-		UE_LOG(LogTemp , Warning , TEXT("Failed to launch URL: %s") , *ErrorMessage);
 	}
 }
 
@@ -84,7 +82,7 @@ void AHttpActor::SendSoundFileToServer()
 {
 	UE_LOG(LogTemp, Warning, TEXT("SendGradingDataToServer"));
 	TArray<uint8> FileData;
-	FString FilePath = FPaths::ProjectContentDir() + TEXT("/Sound/Report.wav");
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong_CUT.wav");
 
 	if (FFileHelper::LoadFileToArray(FileData, *FilePath))
 	{
@@ -95,17 +93,18 @@ void AHttpActor::SendSoundFileToServer()
 		UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
 		return;
 	}
+
 	FString En_SoundFile = FBase64::Encode(FileData);
 
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL(serverURL);
+	req->SetURL("http://221.163.19.218:1234/sendBase64");
 	req->SetVerb("POST");
 	req->SetHeader(TEXT("User-Agent"), "UnrealEngine/5.0");
 	req->SetHeader(TEXT("token"), FString::Printf(TEXT("%s"), *token));
 	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
-	req->SetContentAsString(En_SoundFile);
+	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID,FString::Printf(TEXT("%s"),*song_id) ,FString::Printf(TEXT("%s") , *track_id) , 0.0 , 10.0 , En_SoundFile));
 
 	req->OnProcessRequestComplete().BindUObject(this, &AHttpActor::ResSendSoundFileToServer);
 
@@ -114,6 +113,69 @@ void AHttpActor::SendSoundFileToServer()
 
 void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
+	if ( bConnectedSuccessfully ) {
+		solution_10 = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
+		FString FilePath = FPaths::ProjectContentDir() + TEXT("solution_10.txt");
+		if ( FFileHelper::SaveStringToFile(solution_10 , *FilePath) )
+		{
+			UE_LOG(LogTemp , Warning , TEXT("save success : %s") , *FilePath);
+		}
+		else
+		{
+			UE_LOG(LogTemp , Error , TEXT("save success : %s") , *FilePath);
+		}
+	}
+	else {
+		UE_LOG(LogTemp , Warning , TEXT("Failed"));
+	}
+}
+
+void AHttpActor::SendOriginSoundFileToServer()
+{
+	TArray<uint8> FileData;
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong.wav");
+	if ( !FFileHelper::LoadFileToArray(FileData , *FilePath) )
+	{
+		UE_LOG(LogTemp , Error , TEXT("Failed to load file: %s") , *FilePath);
+		return;
+	}
+	else {
+		UE_LOG(LogTemp , Verbose , TEXT("Successed to load file: %s") , *FilePath);
+	}
+
+	FHttpModule& httpModule = FHttpModule::Get();
+	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
+
+	req->SetURL("http://192.168.0.25:8080/ppt/compare_similarity");
+	req->SetVerb("POST");
+	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
+	req->SetHeader(TEXT("token") , FString::Printf(TEXT("%s") , *token));
+	req->SetHeader(TEXT("content-type") , TEXT("multipart/form-data"));
+	req->SetContent(FileData);
+
+	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
+
+	req->ProcessRequest();
+	UE_LOG(LogTemp , Warning , TEXT("SendOriginSoundFileToServer(), ProcessRequest()"));
+}
+
+void AHttpActor::ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
+{
+	if ( bConnectedSuccessfully ) {
+		solution = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
+		FString FilePath = FPaths::ProjectContentDir() + "solution.txt";
+		if ( FFileHelper::SaveStringToFile(solution , *FilePath) )
+		{
+			UE_LOG(LogTemp , Warning , TEXT("파일 저장 성공: %s") , *FilePath);
+		}
+		else
+		{
+			UE_LOG(LogTemp , Error , TEXT("파일 저장 실패: %s") , *FilePath);
+		}
+	}
+	else {
+		UE_LOG(LogTemp , Warning , TEXT("Failed"));
+	}
 }
 
 

@@ -22,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+	// Called every frame2
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -31,17 +31,27 @@ public:
 	UPROPERTY()
 	class ULoginUI* LoginUI;
 
-
-	void LoginRequest();
+	void LoginRequest(FString id, FString pwd);
 
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
-
-	void OpenKakaoLoginPage();
-
+	
+	UFUNCTION(BlueprintCallable)
 	void SendSoundFileToServer();
 
-	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully); 
 
-	FString serverURL = "http://localhost:8080/login/kakao";
+	UFUNCTION(BlueprintCallable)
+ 	void SendOriginSoundFileToServer();
+ 
+ 	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+
+	FString serverURL = "http://192.168.0.25:8080/sendBase64";
 	FString token;
+	FString myID = "shinhonggyu";
+	FString myPwd;
+	FString song_id = "song_456";
+	FString track_id = "track_789";
+
+	FString solution;
+	FString solution_10;
 };
