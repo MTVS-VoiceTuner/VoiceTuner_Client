@@ -44,7 +44,7 @@ FString UJsonParseLib::ReturnJsonParse(const FString& json)
 FString UJsonParseLib::MakeLoginInfoJson(FString id , FString pwd)
 {
 	TSharedPtr<FJsonObject> jsonObject = MakeShareable(new FJsonObject());
-	jsonObject->SetStringField("identity" , *id);
+	jsonObject->SetStringField("email" , *id);
 	jsonObject->SetStringField("password" , *pwd);
 
 	FString json;
@@ -64,7 +64,7 @@ FString UJsonParseLib::MakeSoundFileDate(FString user_id , FString song_id , FSt
 	jsonObject->SetNumberField("start_time" , start_time);
 	jsonObject->SetNumberField("end_time" , end_time);
 	jsonObject->SetStringField("audio_data" , *audio_data);
-
+	
 	FString json;
 	TSharedRef<TJsonWriter<TCHAR>> writer = TJsonWriterFactory<TCHAR>::Create(&json);
 	FJsonSerializer::Serialize(jsonObject.ToSharedRef() , writer);

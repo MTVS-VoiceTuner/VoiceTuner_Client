@@ -50,8 +50,8 @@ void AHttpActor::LoginRequest(FString id,FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL(serverURL);
-	req->SetVerb(TEXT("GET"));
+	req->SetURL("http://192.168.0.25:8080/api/auth/login");
+	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id,pwd));
 
@@ -64,12 +64,18 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 {
 	if ( bConnectedSuccessfully ) {
 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
-		LoginUI->RemoveFromParent();
+		LoginUI->RemoveFromParent(); 
+		auto* pc = GetWorld()->GetFirstPlayerController();
+		if ( pc ) {
+			pc->bShowMouseCursor = false;
+
+			FInputModeGameOnly InputMode;
+			pc->SetInputMode(InputMode);
+		}
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
 	}
-	FPlatformProcess
 }
 
 void AHttpActor::SendSoundFileToServer()
@@ -93,12 +99,12 @@ void AHttpActor::SendSoundFileToServer()
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL(serverURL);
+	req->SetURL("http://192.168.0.25:8888/sendBase64");
 	req->SetVerb("POST");
 	req->SetHeader(TEXT("User-Agent"), "UnrealEngine/5.0");
 	req->SetHeader(TEXT("token"), FString::Printf(TEXT("%s"), *token));
 	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
-	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID,FString::Printf(TEXT("%s"),*song_id) , FString::Printf(TEXT("%s") , *track_id) , 1.0 , 1.0 , En_SoundFile));
+	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID,FString::Printf(TEXT("%s"),*song_id) , FString::Printf(TEXT("%s") , *track_id) , 0.0 , 10.0 , En_SoundFile));
 
 	req->OnProcessRequestComplete().BindUObject(this, &AHttpActor::ResSendSoundFileToServer);
 
@@ -108,8 +114,16 @@ void AHttpActor::SendSoundFileToServer()
 void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
 	if ( bConnectedSuccessfully ) {
-		UE_LOG(LogTemp,Warning,TEXT("%s"), *UJsonParseLib::ReturnJsonParse(Response->GetContentAsString()));
-
+		solution_10 = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
+		FString FilePath = FPaths::ProjectContentDir() + TEXT("solution_10.txt");
+		if ( FFileHelper::SaveStringToFile(solution_10 , *FilePath) )
+		{
+			UE_LOG(LogTemp , Warning , TEXT("save success : %s") , *FilePath);
+		}
+		else
+		{
+			UE_LOG(LogTemp , Error , TEXT("save success : %s") , *FilePath);
+		}
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));

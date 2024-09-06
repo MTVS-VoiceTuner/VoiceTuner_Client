@@ -21,15 +21,16 @@ void ULoginUI::NativeConstruct()
 
 void ULoginUI::OnMyButtonClicked()
 {
-	UserIdPrompt->SetText(FText());
-	UserPwdPrompt->SetText(FText());
-	if ( !id.IsEmpty() && !pwd.IsEmpty() ) {
-		HttpActor->LoginRequest(id,pwd);
-	}
-	else {
-		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
-		UserIdPrompt->SetKeyboardFocus();
-	}
+	HttpActor->SendSoundFileToServer();
+// 	UserIdPrompt->SetText(FText());
+// 	UserPwdPrompt->SetText(FText());
+// 	if ( !id.IsEmpty() && !pwd.IsEmpty() ) {
+// 		//HttpActor->LoginRequest(id,pwd);
+// 	}
+// 	else {
+// 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
+// 		UserIdPrompt->SetKeyboardFocus();
+// 	}
 }
 
 void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)

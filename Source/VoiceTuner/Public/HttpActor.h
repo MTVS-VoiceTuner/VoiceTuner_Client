@@ -39,6 +39,7 @@ public:
 
 	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully); 
 
+	UFUNCTION(BlueprintCallable)
  	void SendOriginSoundFileToServer();
  
  	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
@@ -47,8 +48,9 @@ public:
 	FString token;
 	FString myID = "shinhonggyu";
 	FString myPwd;
-	FString song_id = "Sinhodeong";
-	FString track_id = "1st";
+	FString song_id = "song_456";
+	FString track_id = "track_789";
 
 	FString solution;
+	FString solution_10;
 };
