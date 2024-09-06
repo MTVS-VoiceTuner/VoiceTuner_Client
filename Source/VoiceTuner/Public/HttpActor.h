@@ -34,7 +34,8 @@ public:
 	void LoginRequest(FString id, FString pwd);
 
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
-
+	
+	UFUNCTION(BlueprintCallable)
 	void SendSoundFileToServer();
 
 	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully); 
