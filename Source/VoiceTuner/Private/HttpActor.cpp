@@ -50,7 +50,7 @@ void AHttpActor::LoginRequest(FString id,FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL("http://172.226.95.45:8080/api/auth/login");
+	req->SetURL("http://221.163.19.218:8080/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id,pwd));
@@ -99,12 +99,12 @@ void AHttpActor::SendSoundFileToServer()
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL("http://172.226.95.45:8888/sendBase64");
+	req->SetURL("http://221.163.19.218:1234/sendBase64");
 	req->SetVerb("POST");
 	req->SetHeader(TEXT("User-Agent"), "UnrealEngine/5.0");
 	req->SetHeader(TEXT("token"), FString::Printf(TEXT("%s"), *token));
 	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
-	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID,FString::Printf(TEXT("%s"),*song_id) , FString::Printf(TEXT("%s") , *track_id) , 0.0 , 10.0 , En_SoundFile));
+	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID,FString::Printf(TEXT("%s"),*song_id) ,FString::Printf(TEXT("%s") , *track_id) , 0.0 , 10.0 , En_SoundFile));
 
 	req->OnProcessRequestComplete().BindUObject(this, &AHttpActor::ResSendSoundFileToServer);
 
