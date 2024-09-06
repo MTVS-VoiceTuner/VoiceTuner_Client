@@ -20,9 +20,26 @@ public:
 	UPROPERTY(meta = ( BindWidget ))
 	class UButton* LoginButton;
 
+	UPROPERTY(meta = (BindWidget))
+	class UEditableText* UserIdPrompt;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UEditableText* UserPwdPrompt;
+
 	UFUNCTION()
 	void OnMyButtonClicked();
 
 	UPROPERTY()
 	class AHttpActor* HttpActor;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AHttpActor> HAFactory;
+
+	UFUNCTION()
+	void OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod);
+	UFUNCTION()
+	void OnMyPwdCommitted(const FText& Text , ETextCommit::Type CommitMethod);
+
+	FString id;
+	FString pwd;
 };

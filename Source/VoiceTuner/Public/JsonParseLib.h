@@ -16,4 +16,10 @@ class VOICETUNER_API UJsonParseLib : public UBlueprintFunctionLibrary
 
 public:
 	static FString TokenJsonParse(const FString& json);
+
+	static FString ReturnJsonParse(const FString& json);
+
+	static FString MakeLoginInfoJson(FString id , FString pwd);
+
+	static FString MakeSoundFileDate(FString user_id,FString song_id, FString track_id, float start_time, float end_time, FString audio_data);
 };
