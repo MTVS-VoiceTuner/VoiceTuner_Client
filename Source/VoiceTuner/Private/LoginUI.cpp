@@ -6,6 +6,7 @@
 #include "HttpActor.h"
 #include "Components/EditableText.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 void ULoginUI::NativeConstruct()
 {
@@ -20,7 +21,15 @@ void ULoginUI::NativeConstruct()
 
 void ULoginUI::OnMyButtonClicked()
 {
-	HttpActor->SendOriginSoundFileToServer();
+	UserIdPrompt->SetText(FText());
+	UserPwdPrompt->SetText(FText());
+	if ( !id.IsEmpty() && !pwd.IsEmpty() ) {
+		HttpActor->LoginRequest(id,pwd);
+	}
+	else {
+		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
+		UserIdPrompt->SetKeyboardFocus();
+	}
 }
 
 void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)

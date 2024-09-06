@@ -22,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+	// Called every frame2
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -43,10 +43,12 @@ public:
  
  	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
-	FString myID = "shinhonggyu";
-	FString myPwd;
 	FString serverURL = "http://192.168.0.25:8080/sendBase64";
 	FString token;
+	FString myID = "shinhonggyu";
+	FString myPwd;
 	FString song_id = "Sinhodeong";
 	FString track_id = "1st";
+
+	FString solution;
 };

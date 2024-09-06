@@ -68,8 +68,8 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
-
 	}
+	FPlatformProcess
 }
 
 void AHttpActor::SendSoundFileToServer()
@@ -148,8 +148,16 @@ void AHttpActor::SendOriginSoundFileToServer()
 void AHttpActor::ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
 	if ( bConnectedSuccessfully ) {
-		UE_LOG(LogTemp , Warning , TEXT("%s") , *UJsonParseLib::ReturnJsonParse(Response->GetContentAsString()));
-
+		solution = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
+		FString FilePath = FPaths::ProjectContentDir() + "solution.txt";
+		if ( FFileHelper::SaveStringToFile(solution , *FilePath) )
+		{
+			UE_LOG(LogTemp , Warning , TEXT("파일 저장 성공: %s") , *FilePath);
+		}
+		else
+		{
+			UE_LOG(LogTemp , Error , TEXT("파일 저장 실패: %s") , *FilePath);
+		}
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
