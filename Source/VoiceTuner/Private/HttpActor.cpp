@@ -67,9 +67,9 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 		LoginUI->RemoveFromParent();
 		auto* pc = GetWorld()->GetFirstPlayerController();
 		if ( pc ) {
-			pc->bShowMouseCursor = false;
+			pc->bShowMouseCursor = true;
 
-			FInputModeGameOnly InputMode;
+			FInputModeGameAndUI InputMode;
 			pc->SetInputMode(InputMode);
 		}
 	}
