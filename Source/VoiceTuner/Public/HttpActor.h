@@ -8,6 +8,9 @@
 #include "Interfaces/IHttpResponse.h"
 #include "HttpActor.generated.h"
 
+
+static bool loginOnce = false;
+
 UCLASS()
 class VOICETUNER_API AHttpActor : public AActor
 {
@@ -24,6 +27,7 @@ protected:
 public:	
 	// Called every frame2
 	virtual void Tick(float DeltaTime) override;
+
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ULoginUI> LoginUIFactory;
@@ -54,4 +58,5 @@ public:
 
 	FString solution;
 	FString solution_10;
+
 };

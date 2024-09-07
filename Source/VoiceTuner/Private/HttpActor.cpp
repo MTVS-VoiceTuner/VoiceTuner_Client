@@ -13,7 +13,6 @@ AHttpActor::AHttpActor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +21,8 @@ void AHttpActor::BeginPlay()
 	Super::BeginPlay();
 	if ( LoginUIFactory ) {
 		LoginUI = CreateWidget<ULoginUI>(GetWorld() , LoginUIFactory);
-		if ( LoginUI ) {
+		if ( LoginUI && !loginOnce ) {
+			loginOnce = true;
 			LoginUI->AddToViewport();
 			auto* pc = GetWorld()->GetFirstPlayerController();
 			if ( pc ) {
@@ -42,7 +42,7 @@ void AHttpActor::Tick(float DeltaTime)
 
 }
 
-void AHttpActor::LoginRequest(FString id,FString pwd)
+void AHttpActor::LoginRequest(FString id , FString pwd)
 {
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
@@ -53,7 +53,7 @@ void AHttpActor::LoginRequest(FString id,FString pwd)
 	req->SetURL("http://39.115.91.53:8080/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
-	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id,pwd));
+	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id , pwd));
 
 	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResLoginRequest);
 
@@ -64,7 +64,7 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 {
 	if ( bConnectedSuccessfully ) {
 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
-		LoginUI->RemoveFromParent(); 
+		LoginUI->RemoveFromParent();
 		auto* pc = GetWorld()->GetFirstPlayerController();
 		if ( pc ) {
 			pc->bShowMouseCursor = false;
@@ -80,17 +80,17 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 
 void AHttpActor::SendSoundFileToServer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SendGradingDataToServer"));
+	UE_LOG(LogTemp , Warning , TEXT("SendGradingDataToServer"));
 	TArray<uint8> FileData;
 	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong_CUT.wav");
 
-	if (FFileHelper::LoadFileToArray(FileData, *FilePath))
+	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
-		UE_LOG(LogTemp, Log, TEXT("File loaded successfully: %s"), *FilePath);
+		UE_LOG(LogTemp , Log , TEXT("File loaded successfully: %s") , *FilePath);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
+		UE_LOG(LogTemp , Error , TEXT("Failed to load file: %s") , *FilePath);
 		return;
 	}
 
@@ -101,12 +101,12 @@ void AHttpActor::SendSoundFileToServer()
 
 	req->SetURL("http://39.115.91.53:8888/sendBase64");
 	req->SetVerb("POST");
-	req->SetHeader(TEXT("User-Agent"), "UnrealEngine/5.0");
-	req->SetHeader(TEXT("token"), FString::Printf(TEXT("%s"), *token));
-	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
-	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID,FString::Printf(TEXT("%s"),*song_id) ,FString::Printf(TEXT("%s") , *track_id) , 0.0 , 10.0 , En_SoundFile));
+	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
+	req->SetHeader(TEXT("token") , FString::Printf(TEXT("%s") , *token));
+	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
+	req->SetContentAsString(UJsonParseLib::MakeSoundFileDate(myID , FString::Printf(TEXT("%s") , *song_id) , FString::Printf(TEXT("%s") , *track_id) , 0.0 , 10.0 , En_SoundFile));
 
-	req->OnProcessRequestComplete().BindUObject(this, &AHttpActor::ResSendSoundFileToServer);
+	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
 
 	req->ProcessRequest();
 }

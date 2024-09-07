@@ -30,6 +30,15 @@ void ULoginUI::OnMyButtonClicked()
 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
  		UserIdPrompt->SetKeyboardFocus();
  	}
+
+// 	RemoveFromParent();
+// 	auto* pc = GetWorld()->GetFirstPlayerController();
+// 	if ( pc ) {
+// 		pc->bShowMouseCursor = false;
+// 
+// 		FInputModeGameOnly InputMode;
+// 		pc->SetInputMode(InputMode);
+// 	}
 }
 
 void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)
