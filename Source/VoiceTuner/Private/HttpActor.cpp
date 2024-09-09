@@ -50,7 +50,7 @@ void AHttpActor::LoginRequest(FString id , FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL("http://39.115.91.53:8080/api/auth/login");
+	req->SetURL("http://125.132.216.190:5678/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id , pwd));
@@ -99,7 +99,7 @@ void AHttpActor::SendSoundFileToServer()
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL("http://39.115.91.53:8888/sendBase64");
+	req->SetURL("http://125.132.216.190:5679/sendBase64");
 	req->SetVerb("POST");
 	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
 	req->SetHeader(TEXT("token") , FString::Printf(TEXT("%s") , *token));
