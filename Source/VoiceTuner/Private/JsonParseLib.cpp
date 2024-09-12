@@ -13,8 +13,8 @@ FString UJsonParseLib::TokenJsonParse(const FString& json)
 	FString returnValue;
 	if ( FJsonSerializer::Deserialize(reader , result) )
 	{
-		if ( result->HasField("token") ) {
-			FString token = result->GetStringField("token");
+		if ( result->HasField("accessToken") ) {
+			FString token = result->GetStringField("accessToken");
 			returnValue.Append(FString::Printf(TEXT("%s") , *token));
 		}
 	}

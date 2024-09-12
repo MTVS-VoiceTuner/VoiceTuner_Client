@@ -13,6 +13,8 @@ void ULoginUI::NativeConstruct()
 	HttpActor = Cast<AHttpActor>(UGameplayStatics::GetActorOfClass(GetWorld(), HAFactory));
 
 	LoginButton->OnClicked.AddDynamic(this,&ULoginUI::OnMyButtonClicked);
+	TestButton->OnClicked.AddDynamic(this,&ULoginUI::OnMyTestButton);
+	TestButton2->OnClicked.AddDynamic(this,&ULoginUI::OnMyTestButton2);
 
 	UserIdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyIDCommitted);
 
@@ -21,24 +23,33 @@ void ULoginUI::NativeConstruct()
 
 void ULoginUI::OnMyButtonClicked()
 {
- 	UserIdPrompt->SetText(FText());
- 	UserPwdPrompt->SetText(FText());
- 	if ( !id.IsEmpty() && !pwd.IsEmpty() ) {
-		HttpActor->LoginRequest(id,pwd);
- 	}
- 	else {
+	UserIdPrompt->SetText(FText());
+	UserPwdPrompt->SetText(FText());
+	if ( !id.IsEmpty() && !pwd.IsEmpty() ) {
+		HttpActor->LoginRequest(id , pwd);
+	}
+	else {
 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
- 		UserIdPrompt->SetKeyboardFocus();
- 	}
+		UserIdPrompt->SetKeyboardFocus();
+	}
 
-// 	RemoveFromParent();
+//	RemoveFromParent();
 // 	auto* pc = GetWorld()->GetFirstPlayerController();
 // 	if ( pc ) {
-// 		pc->bShowMouseCursor = false;
 // 
 // 		FInputModeGameOnly InputMode;
 // 		pc->SetInputMode(InputMode);
 // 	}
+}
+
+void ULoginUI::OnMyTestButton()
+{
+	HttpActor->SendSoundFileToServer();
+}
+
+void ULoginUI::OnMyTestButton2()
+{
+	HttpActor->SendOriginSoundFileToServer();
 }
 
 void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)
@@ -46,7 +57,6 @@ void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMetho
 	if ( CommitMethod == ETextCommit::OnEnter || CommitMethod == ETextCommit::OnUserMovedFocus )
 	{
 		id = Text.ToString();
-		UE_LOG(LogTemp , Log , TEXT("User ID: %s") , *id);
 	}
 }
 
@@ -55,6 +65,5 @@ void ULoginUI::OnMyPwdCommitted(const FText& Text , ETextCommit::Type CommitMeth
 	if ( CommitMethod == ETextCommit::OnEnter || CommitMethod == ETextCommit::OnUserMovedFocus )
 	{
 		pwd = Text.ToString();
-		UE_LOG(LogTemp , Log , TEXT("User ID: %s") , *pwd);
 	}
 }

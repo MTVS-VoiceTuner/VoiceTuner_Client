@@ -19,6 +19,10 @@ public:
 
 	UPROPERTY(meta = ( BindWidget ))
 	class UButton* LoginButton;
+	UPROPERTY(meta = ( BindWidget ))
+	class UButton* TestButton;
+	UPROPERTY(meta = ( BindWidget ))
+	class UButton* TestButton2;
 
 	UPROPERTY(meta = (BindWidget))
 	class UEditableText* UserIdPrompt;
@@ -28,6 +32,10 @@ public:
 
 	UFUNCTION()
 	void OnMyButtonClicked();
+	UFUNCTION()
+	void OnMyTestButton();
+	UFUNCTION()
+	void OnMyTestButton2();
 
 	UPROPERTY()
 	class AHttpActor* HttpActor;
