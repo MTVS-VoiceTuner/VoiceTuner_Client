@@ -4,6 +4,7 @@
 #include "HSW_NetGameInstance.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
+#include "VoiceTuner.h"
 
 void UHSW_NetGameInstance::Init()
 {
@@ -48,14 +49,17 @@ void UHSW_NetGameInstance::CreateMySession(FString roomName , int32 playerCount)
 	FUniqueNetIdPtr netID = GetWorld()->GetFirstLocalPlayerFromController()->GetUniqueNetIdForPlatformUser().GetUniqueNetId();
 
 	SessionInterface->CreateSession(*netID , FName(MySessionName) , settings);
+	PRINTLOG(TEXT("Create Session Start roomName : %s, hostName: %s") , *roomName , *MySessionName);
 }
 
 void UHSW_NetGameInstance::OnMyCreateSessionComplete(FName SessionName , bool bWasSuccessful)
 {
 	if ( bWasSuccessful )
 	{
+		PRINTLOG(TEXT("OnMyCreateSessionComplete is Success"));
 	}
 	else
 	{
+		PRINTLOG(TEXT("OnMyCreateSessionComplete is Fail"));
 	}
 }
