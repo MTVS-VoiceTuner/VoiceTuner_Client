@@ -239,6 +239,9 @@ bool FOnlineSessionSteam::CreateSession(int32 HostingPlayerNum, FName SessionNam
 		// Unique identifier of this build for compatibility
 		Session->SessionSettings.BuildUniqueId = GetBuildUniqueId();
 
+		// Activate Robby
+		Session->SessionSettings.bUseLobbiesIfAvailable = true;
+
 		// Create Internet or LAN match
 		if (!NewSessionSettings.bIsLANMatch)
 		{
