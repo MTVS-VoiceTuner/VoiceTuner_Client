@@ -8,6 +8,7 @@
 
 #include "HitTool.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMusicNote::AMusicNote()
@@ -54,6 +55,10 @@ void AMusicNote::OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 {
 	if(AHitTool* HitTool = Cast<AHitTool>(OtherActor))
 	{
+		if(HitParticle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorLocation());
+		}
 		UE_LOG(LogTemp, Warning, TEXT("Hit!"));
 		Destroy();
 	}
