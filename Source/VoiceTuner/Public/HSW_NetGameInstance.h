@@ -7,6 +7,31 @@
 #include "../../../../Plugins/Online/OnlineSubsystem/Source/Public/Interfaces/OnlineSessionInterface.h"
 #include "HSW_NetGameInstance.generated.h"
 
+USTRUCT(BlueprintType)
+struct FRoomInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	FString roomName;
+	UPROPERTY(BlueprintReadOnly)
+	FString hostName;
+	UPROPERTY(BlueprintReadOnly)
+	int32 maxPlayerCount;
+	UPROPERTY(BlueprintReadOnly)
+	int32 currentPlayerCount;
+	UPROPERTY(BlueprintReadOnly)
+	int32 pingMS;
+
+	int32 index;
+
+	FString ToString()
+	{
+		return FString::Printf(TEXT("%d)[%s][%s] (%d / %d) -> %dms"), index, *roomName, *hostName, currentPlayerCount, maxPlayerCount, pingMS);
+	}
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSearchSignature , const struct FRoomInfo& , info);
 /**
  * 
  */
@@ -20,8 +45,9 @@ public:
 
 	IOnlineSessionPtr SessionInterface;
 
-	FString MySessionName = TEXT("LukasHan");
+	FString MySessionName = TEXT("H-SeungWoo");
 	
+	// 방 생성 ================================================
 	//방생성 요청
 	UFUNCTION()
 	void CreateMySession(FString roomName, int32 playerCount);
@@ -29,4 +55,37 @@ public:
 	// 방생성 응답
 	UFUNCTION()
 	void OnMyCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+
+	// 방 검색 ===================================================
+	// 찾을 방의 목록
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+
+	// 방 찾기 요청
+	void FindOtherSessions();
+	// 방 찾기 응답
+	void OnMyFindSessionsCompleteDelegates(bool bWasSuccessful);
+
+	FSearchSignature OnSearchSignatureCompleteDelegate;
+
+	// 방 입장 ====================================================
+	// 방입장 요청
+	void JoinSession(int32 index);
+	// 방입장 응답
+	void OnMyJoinSessionComplete(FName SessionName , EOnJoinSessionCompleteResult::Type EOnJoinSessionCompleteResult);
+
+
+	// 방 퇴장 ====================================================
+	// 방퇴장 요청 -> UI에서 호출
+	void ExitSession();
+	UFUNCTION(Server, Reliable)
+	void ServerRPCExitSession();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastRPCExitSession();
+
+	// 방퇴장 응답
+	void OnMyDestroySessionComplete(FName SessionName , bool bWasSuccessful);
+
+
+
 };
