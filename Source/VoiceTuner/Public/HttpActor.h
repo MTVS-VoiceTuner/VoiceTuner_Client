@@ -8,9 +8,6 @@
 #include "Interfaces/IHttpResponse.h"
 #include "HttpActor.generated.h"
 
-
-static bool loginOnce = false;
-
 UCLASS()
 class VOICETUNER_API AHttpActor : public AActor
 {
@@ -34,6 +31,11 @@ public:
 	UPROPERTY()
 	class ULoginUI* LoginUI;
 
+	UPROPERTY()
+	class UCustomizationUI* CustomUI;
+
+
+
 	void LoginRequest(FString id, FString pwd);
 
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
@@ -48,6 +50,11 @@ public:
  
  	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
+	void SendUserInfoToDB();
+
+
+	void ResSendUserInfoToDB(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+
 	FString serverURL = "http://192.168.0.25:8080/sendBase64";
 	FString token;
 	FString myID = "shinhonggyu";
@@ -55,7 +62,10 @@ public:
 	FString song_id = "song_456";
 	FString track_id = "track_789";
 
-	FString solution;
 	FString solution_10;
 
+	FString CurrentLevelName;
+
+
+	TMap<FString , FString> userInfo;
 };
