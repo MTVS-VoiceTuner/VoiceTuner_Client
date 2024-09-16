@@ -76,7 +76,9 @@ public:
 
 	// 방 퇴장 ====================================================
 	// 방퇴장 요청 -> UI에서 호출
+	UFUNCTION(BlueprintCallable)
 	void ExitSession();
+
 	UFUNCTION(Server, Reliable)
 	void ServerRPCExitSession();
 
