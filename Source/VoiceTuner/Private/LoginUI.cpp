@@ -13,12 +13,23 @@ void ULoginUI::NativeConstruct()
 	HttpActor = Cast<AHttpActor>(UGameplayStatics::GetActorOfClass(GetWorld(), HAFactory));
 
 	LoginButton->OnClicked.AddDynamic(this,&ULoginUI::OnMyButtonClicked);
+
 	TestButton->OnClicked.AddDynamic(this,&ULoginUI::OnMyTestButton);
 	TestButton2->OnClicked.AddDynamic(this,&ULoginUI::OnMyTestButton2);
+
+	Button_NameInputClear->OnClicked.AddDynamic(this,&ULoginUI::OnMyClearButtonClick);
 
 	UserIdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyIDCommitted);
 
 	UserPwdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyPwdCommitted);
+
+	ET_UserNamePrompt->OnTextCommitted.AddDynamic(this,&ULoginUI::OnMyUserNameCommited);
+
+	Button_Gender_Man->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderMButtonClick);
+	Button_Gender_Woman->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderWButtonClick);
+
+	Button_Style_1->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderWButtonClick);
+	Button_Style_2->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderWButtonClick);
 }
 
 void ULoginUI::OnMyButtonClicked()
@@ -66,4 +77,47 @@ void ULoginUI::OnMyPwdCommitted(const FText& Text , ETextCommit::Type CommitMeth
 	{
 		pwd = Text.ToString();
 	}
+}
+
+void ULoginUI::OnMyUserNameCommited(const FText& Text , ETextCommit::Type CommitMethod)
+{
+	if ( CommitMethod == ETextCommit::OnEnter || CommitMethod == ETextCommit::OnUserMovedFocus )
+	{
+		userName = Text.ToString();
+	}
+}
+
+void ULoginUI::OnMyClearButtonClick()
+{
+	ET_UserNamePrompt->SetText(FText::FromString(""));
+}
+
+void ULoginUI::OnMyGenderMButtonClick()
+{
+	userGender = 1;
+	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.61f,0.65f,0.79f)));
+	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.75f, 0.0f, 0.8f)));
+}
+
+void ULoginUI::OnMyGenderWButtonClick()
+{
+	userGender = 2;
+	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.61f, 0.65f, 0.79f)));
+	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
+}
+
+void ULoginUI::OnMyStyle1ButtonClick()
+{
+	userStyle = 1;
+
+	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.61f , 0.65f , 0.79f)));
+	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
+}
+
+void ULoginUI::OnMyStyle2ButtonClick()
+{
+	userStyle = 2;
+
+	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.61f , 0.65f , 0.79f)));
+	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
 }

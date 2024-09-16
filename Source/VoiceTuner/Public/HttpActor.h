@@ -30,8 +30,6 @@ public:
 
 	UPROPERTY()
 	class ULoginUI* LoginUI;
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UCustomizationUI> CustomUIFactory;
 
 	UPROPERTY()
 	class UCustomizationUI* CustomUI;
@@ -52,6 +50,11 @@ public:
  
  	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
+	void SendUserInfoToDB();
+
+
+	void ResSendUserInfoToDB(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+
 	FString serverURL = "http://192.168.0.25:8080/sendBase64";
 	FString token;
 	FString myID = "shinhonggyu";
@@ -62,4 +65,7 @@ public:
 	FString solution_10;
 
 	FString CurrentLevelName;
+
+
+	TMap<FString , FString> userInfo;
 };

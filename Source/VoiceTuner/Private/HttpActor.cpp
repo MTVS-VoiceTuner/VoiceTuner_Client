@@ -7,6 +7,7 @@
 #include "LoginUI.h"
 #include "Misc/Paths.h"
 #include "CustomizationUI.h"
+#include "Components/WidgetSwitcher.h"
 
 // Sets default values
 AHttpActor::AHttpActor()
@@ -53,7 +54,7 @@ void AHttpActor::LoginRequest(FString id , FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL("http://192.168.110.187:8080/api/auth/login");
+	req->SetURL("http://39.115.91.53:8080/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id , pwd));
@@ -69,17 +70,7 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
 		UE_LOG(LogTemp , Warning , TEXT("token : %s") , *token);
 		UE_LOG(LogTemp , Warning , TEXT("Response : %s") , *Response->GetContentAsString());
-		// 		auto* pc = GetWorld()->GetFirstPlayerController();
-		// 		if ( pc ) {
-		// 			pc->bShowMouseCursor = true;
-		// 
-		// 			FInputModeGameAndUI InputMode;
-		// 			pc->SetInputMode(InputMode);
-		// 		}
-		// 		if ( CurrentLevelName == "UEDPIE_0_LoginLevel" ) {
-		// 			CustomUI = Cast<UCustomizationUI>(CreateWidget(GetWorld() , CustomUIFactory));
-		// 			CustomUI->AddToViewport();
-		// 		}
+// 		LoginUI->StartWidgetSwitcher->SetActiveWidgetIndex(1);
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
@@ -90,19 +81,21 @@ void AHttpActor::SendSoundFileToServer()
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://192.168.110.187:8080/api/sendOriginSong"));
+	Request->SetURL(TEXT("http://39.115.91.53:8080/api/sendOriginVerse"));
 	Request->SetVerb(TEXT("POST"));
 
-	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW"); 
+	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
+
+	Request->SetHeader(TEXT("accessToken") , FString::Printf(TEXT("%s") , *token));
 	Request->SetHeader(TEXT("content-type") , TEXT("multipart/form-data; boundary=") + Boundary);
 
 	TArray<uint8> FileData;
-	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong_CUT.wav");
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong.wav");
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
 		FString FormData;
 		FormData += FString::Printf(TEXT("--%s\r\n") , *Boundary);
-		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"Sinhodeong_CUT.wav\"\r\n");
+		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"Sinhodeong.wav\"\r\n");
 		FormData += TEXT("content-Type: audio/wav\r\n\r\n");
 
 		TArray<uint8> Body;
@@ -158,17 +151,16 @@ void AHttpActor::SendOriginSoundFileToServer()
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL("http://192.168.110.187:8080/api/sendOriginVerse");
+	req->SetURL("http://39.115.91.53:8080/api/sendOriginVerse");
 	req->SetVerb("POST");
 	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
-	req->SetHeader(TEXT("token") , FString::Printf(TEXT("%s") , *token));
+	req->SetHeader(TEXT("accessToken") , FString::Printf(TEXT("%s") , *token));
 	req->SetHeader(TEXT("content-type") , TEXT("multipart/form-data"));
 	req->SetContent(audio_file);
 
 	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
 
 	req->ProcessRequest();
-	UE_LOG(LogTemp , Warning , TEXT("SendOriginSoundFileToServer(), ProcessRequest()"));
 }
 
 void AHttpActor::ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
@@ -188,6 +180,26 @@ void AHttpActor::ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpR
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
 	}
+}
+
+void AHttpActor::SendUserInfoToDB()
+{
+	FHttpModule& httpModule = FHttpModule::Get();
+	TSharedPtr<IHttpRequest> req = httpModule.CreateRequest();
+
+	req->SetVerb("POST");
+	req->SetHeader(TEXT("accessToken"),FString::Printf(TEXT("%s"),*token));
+	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
+
+	req->SetContentAsString(UJsonParseLib::MakeUserInfoJson(userInfo));
+
+	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendUserInfoToDB);
+
+	req->ProcessRequest();
+}
+
+void AHttpActor::ResSendUserInfoToDB(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
+{
 }
 
 
