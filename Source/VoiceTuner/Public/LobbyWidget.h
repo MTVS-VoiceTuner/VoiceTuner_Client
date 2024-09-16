@@ -57,7 +57,7 @@ public:
 	class UButton* CR_Button_GoMenu;
 
 	UFUNCTION()
-	void CR_OnClickCreatRoom();
+	void CR_OnClickCreateRoom();
 
 	UFUNCTION()
 	void CR_OnChangeSliderPlayerCount(float value);

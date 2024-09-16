@@ -29,8 +29,8 @@ void ULobbyWidget::NativeConstruct()
 	FS_Button_GoMenu->OnClicked.AddDynamic(this , &ULobbyWidget::OnClickGoMenu);
 
 	// 방만들기 버튼
-	CR_Button_CreateRoom->OnClicked.AddDynamic(this, &ULobbyWidget::CR_OnClickCreatRoom);
-	CR_Slider_PlayerCount->OnValueChanged.AddDynamic(this, &ULobbyWidget::CR_OnChangeSliderPlayerCount);
+	CR_Button_CreateRoom->OnClicked.AddDynamic(this , &ULobbyWidget::CR_OnClickCreateRoom);
+	CR_Slider_PlayerCount->OnValueChanged.AddDynamic(this , &ULobbyWidget::CR_OnChangeSliderPlayerCount);
 
 	// 세션 찾기
 	FS_Button_FindSessions->OnClicked.AddDynamic(this, &ULobbyWidget::FS_OnClickFindSessions);
@@ -53,7 +53,7 @@ void ULobbyWidget::MENU_OnClickGoFindSessions()
 	LobbyWidgetSwitcher->SetActiveWidgetIndex(2);
 }
 
-void ULobbyWidget::CR_OnClickCreatRoom()
+void ULobbyWidget::CR_OnClickCreateRoom()
 {
 	auto* gi = Cast<UHSW_NetGameInstance>(GetWorld()->GetGameInstance());
 	FString roomName = CR_EditText_RoomName->GetText().ToString();
