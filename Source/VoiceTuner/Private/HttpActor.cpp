@@ -6,7 +6,6 @@
 #include "JsonParseLib.h"
 #include "LoginUI.h"
 #include "Misc/Paths.h"
-#include "HAL/PlatformProcess.h"
 #include "CustomizationUI.h"
 
 // Sets default values
@@ -54,7 +53,7 @@ void AHttpActor::LoginRequest(FString id , FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL("http://192.168.73.217:8080/api/auth/login");
+	req->SetURL("http://192.168.110.187:8080/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id , pwd));
@@ -67,9 +66,9 @@ void AHttpActor::LoginRequest(FString id , FString pwd)
 void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
 	if ( bConnectedSuccessfully ) {
-// 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
-// 		UE_LOG(LogTemp , Warning , TEXT("token : %s") , *token);
-// 		UE_LOG(LogTemp , Warning , TEXT("Response : %s") , *Response->GetContentAsString());
+		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
+		UE_LOG(LogTemp , Warning , TEXT("token : %s") , *token);
+		UE_LOG(LogTemp , Warning , TEXT("Response : %s") , *Response->GetContentAsString());
 		// 		auto* pc = GetWorld()->GetFirstPlayerController();
 		// 		if ( pc ) {
 		// 			pc->bShowMouseCursor = true;
@@ -77,10 +76,10 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 		// 			FInputModeGameAndUI InputMode;
 		// 			pc->SetInputMode(InputMode);
 		// 		}
-// 		if ( CurrentLevelName == "UEDPIE_0_LoginLevel" ) {
-// 			CustomUI = Cast<UCustomizationUI>(CreateWidget(GetWorld() , CustomUIFactory));
-// 			CustomUI->AddToViewport();
-// 		}
+		// 		if ( CurrentLevelName == "UEDPIE_0_LoginLevel" ) {
+		// 			CustomUI = Cast<UCustomizationUI>(CreateWidget(GetWorld() , CustomUIFactory));
+		// 			CustomUI->AddToViewport();
+		// 		}
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
@@ -91,39 +90,36 @@ void AHttpActor::SendSoundFileToServer()
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	// 2. 서버의 엔드포인트 URL 설정
-	Request->SetURL(TEXT("http://192.168.73.217:8080/api/sendOriginVerse"));
+	Request->SetURL(TEXT("http://192.168.110.187:8080/api/sendOriginSong"));
 	Request->SetVerb(TEXT("POST"));
 
-	// 3. Content-Type을 multipart/form-data로 설정
-	FString Boundary = TEXT("--------------------------131626570941853576335132");  // multipart 형식에서 사용되는 boundary
-	Request->SetHeader(TEXT("content-Type") , FString::Printf(TEXT("multipart/form-data; boundary=%s") , *Boundary));
+	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW"); 
+	Request->SetHeader(TEXT("content-type") , TEXT("multipart/form-data; boundary=") + Boundary);
 
-	// 4. 파일 읽기
 	TArray<uint8> FileData;
 	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong_CUT.wav");
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
-		// multipart/form-data 형식으로 본문 작성
 		FString FormData;
 		FormData += FString::Printf(TEXT("--%s\r\n") , *Boundary);
-		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"audio.wav\"\r\n");
+		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"Sinhodeong_CUT.wav\"\r\n");
 		FormData += TEXT("content-Type: audio/wav\r\n\r\n");
 
-		// 파일 데이터를 추가
-		FormData.Append(reinterpret_cast<const char*>( FileData.GetData() ) , FileData.Num());
-		FormData += FString::Printf(TEXT("\r\n--%s--\r\n") , *Boundary);
+		TArray<uint8> Body;
+		Body.Append((uint8*)TCHAR_TO_UTF8(*FormData) , FormData.Len());
+		Body.Append(FileData);
 
-		// 본문 데이터를 UTF8로 설정
-		Request->SetContentAsString(FormData);
+		FString EndBoundary = TEXT("\r\n--") + Boundary + TEXT("--\r\n");
+		Body.Append((uint8*)TCHAR_TO_UTF8(*EndBoundary) , EndBoundary.Len());
 
-		// Content-Length 헤더 설정 (선택사항)
-		Request->SetHeader(TEXT("Content-Length") , FString::FromInt(FormData.Len()));
+		Request->SetContent(Body);
+
+		Request->SetHeader(TEXT("content-length") , FString::FromInt(Body.Num()));
+		Request->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
+
+		Request->ProcessRequest();
+		UE_LOG(LogTemp , Warning , TEXT("SendSoundFileToServer(), ProcessRequest()"));
 	}
-	Request->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
-
-	Request->ProcessRequest();
-	UE_LOG(LogTemp , Warning , TEXT("SendOriginSoundFileToServer(), ProcessRequest()"));
 }
 
 void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
@@ -162,7 +158,7 @@ void AHttpActor::SendOriginSoundFileToServer()
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL("http://192.168.73.217:8080/api/sendOriginVerse");
+	req->SetURL("http://192.168.110.187:8080/api/sendOriginVerse");
 	req->SetVerb("POST");
 	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
 	req->SetHeader(TEXT("token") , FString::Printf(TEXT("%s") , *token));

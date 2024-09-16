@@ -53,7 +53,7 @@ public:
  	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
 	FString serverURL = "http://192.168.0.25:8080/sendBase64";
-	FString token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlVTRVIiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzI2MTMyNTkwLCJleHAiOjE3MjYxMzM0OTB9.xjw-Bw6P5Fkw8sHjWgJjNR3awznfek3a1zpBi412hNQ";
+	FString token;
 	FString myID = "shinhonggyu";
 	FString myPwd;
 	FString song_id = "song_456";
