@@ -20,6 +20,7 @@ void USessionSlotWidget::OnClickJoin()
 	if ( gi )
 	{
 		gi->JoinSession(SessionSearchIndex);
+		
 	}
 }
 
