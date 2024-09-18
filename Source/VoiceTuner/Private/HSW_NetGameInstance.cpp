@@ -83,7 +83,7 @@ void UHSW_NetGameInstance::OnMyCreateSessionComplete(FName SessionName , bool bW
 		PRINTLOG(TEXT("OnMyCreateSessionComplete is Success~~~~~"));
 
 		// 서버가 여행을 떠나고싶다.
-		GetWorld()->ServerTravel(TEXT("/Game/HSW/Maps/HSW_Stage?listen"));
+		GetWorld()->ServerTravel(TEXT("/Game/HSW/Maps/L_HSW_ThirdPersonMap?listen"));
 	}
 	else
 	{
