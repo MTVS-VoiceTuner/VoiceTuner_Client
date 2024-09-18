@@ -65,6 +65,10 @@ void UHSW_NetGameInstance::CreateMySession(FString roomName , int32 playerCount)
 	settings.Set(FName("ROOM_NAME") , roomName , EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	settings.Set(FName("HOST_NAME") , MySessionName , EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 
+	//음악파일정보 
+
+	settings.Set(FName("Song_Name") , SongName , EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+
 	FUniqueNetIdPtr netID = GetWorld()->GetFirstLocalPlayerFromController()->GetUniqueNetIdForPlatformUser().GetUniqueNetId();
 
 	SessionInterface->CreateSession(*netID , FName(MySessionName) , settings);
