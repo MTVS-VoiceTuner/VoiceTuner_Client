@@ -8,6 +8,7 @@
 #include "Misc/Paths.h"
 #include "CustomizationUI.h"
 #include "Components/WidgetSwitcher.h"
+#include "HSW_NetGameInstance.h"
 
 // Sets default values
 AHttpActor::AHttpActor()
@@ -21,6 +22,10 @@ void AHttpActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	gi = Cast<UHSW_NetGameInstance>(GetGameInstance());
+	if ( gi && !(gi->GetAccessToken().IsEmpty())) {
+		token = gi->GetAccessToken();
+	}
 	CurrentLevelName = GetWorld()->GetMapName();
 	if ( CurrentLevelName == "UEDPIE_0_LoginLevel" ) {
 		if ( LoginUIFactory ) {
@@ -70,7 +75,12 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
 		UE_LOG(LogTemp , Warning , TEXT("token : %s") , *token);
 		UE_LOG(LogTemp , Warning , TEXT("Response : %s") , *Response->GetContentAsString());
-// 		LoginUI->StartWidgetSwitcher->SetActiveWidgetIndex(1);
+		if ( gi && !myID.IsEmpty() && !myPwd.IsEmpty() && !token.IsEmpty() ) {
+			gi->SetID(myID);
+			gi->SetPWD(myPwd);
+			gi->SetAccessToken(token);
+		}
+ 		LoginUI->StartWidgetSwitcher->SetActiveWidgetIndex(1);
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));

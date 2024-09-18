@@ -68,4 +68,6 @@ public:
 
 
 	TMap<FString , FString> userInfo;
+
+	class UHSW_NetGameInstance* gi;
 };
