@@ -25,9 +25,6 @@ class VOICETUNER_API AMusicNote : public AActor
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float Speed = 500.f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particle, meta = (AllowPrivateAccess = "true"))
-	UParticleSystem* HitParticle;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -42,7 +39,4 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Move();
-
-	UFUNCTION()
-	void OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
