@@ -47,7 +47,6 @@ void ULoginUI::OnMyButtonClicked()
 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
 		UserIdPrompt->SetKeyboardFocus();
 	}
-	StartWidgetSwitcher->SetActiveWidgetIndex(1);
 	//	RemoveFromParent();
 	// 	auto* pc = GetWorld()->GetFirstPlayerController();
 	// 	if ( pc ) {
