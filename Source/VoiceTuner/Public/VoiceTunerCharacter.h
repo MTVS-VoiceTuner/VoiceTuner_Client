@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "VoiceTunerCharacter.generated.h"
 
+class UPointComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -44,6 +45,9 @@ class AVoiceTunerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = PointComponent, meta = (AllowPrivateAccess = "true"))
+	UPointComponent* PointComponent;
+
 public:
 	AVoiceTunerCharacter();
 	
@@ -69,5 +73,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	FORCEINLINE class UPointComponent* GetPointComponent() const { return PointComponent; }
 };
 
