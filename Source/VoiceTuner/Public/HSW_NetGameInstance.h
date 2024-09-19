@@ -92,6 +92,4 @@ public:
 	// 방퇴장 응답
 	void OnMyDestroySessionComplete(FName SessionName , bool bWasSuccessful);
 
-
-
 };
