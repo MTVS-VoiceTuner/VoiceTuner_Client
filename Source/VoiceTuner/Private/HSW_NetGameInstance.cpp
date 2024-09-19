@@ -189,3 +189,64 @@ void UHSW_NetGameInstance::OnMyDestroySessionComplete(FName SessionName , bool b
 		pc->ClientTravel(TEXT("/Game/HSW/Maps/HSW_Lobby") , ETravelType::TRAVEL_Absolute);
 	}
 }
+
+
+void UHSW_NetGameInstance::SetGender(int32 p_GenderCode)
+{
+	genderCode = p_GenderCode;
+}
+
+int32 UHSW_NetGameInstance::GetGender() const
+{
+	return	genderCode;
+}
+
+void UHSW_NetGameInstance::SetStyle(int32 p_StyleCode)
+{
+	styleCode = p_StyleCode;
+}
+
+int32 UHSW_NetGameInstance::GetSyle() const
+{
+	return styleCode;
+}
+
+void UHSW_NetGameInstance::SetAccessToken(FString p_AccessToken)
+{
+	accessToken = p_AccessToken;
+}
+
+FString UHSW_NetGameInstance::GetAccessToken() const
+{
+	return accessToken;
+}
+
+void UHSW_NetGameInstance::SetID(FString p_UserID)
+{
+	userID = p_UserID;
+}
+
+FString UHSW_NetGameInstance::GetID() const
+{
+	return userID;
+}
+
+void UHSW_NetGameInstance::SetPWD(FString p_UserPWD)
+{
+	userPWD = p_UserPWD;
+}
+
+FString UHSW_NetGameInstance::GetPWD() const
+{
+	return userPWD;
+}
+
+void UHSW_NetGameInstance::SetName(FString p_UserName)
+{
+	userName = p_UserName;
+}
+
+FString UHSW_NetGameInstance::GetName() const
+{
+	return userName;
+}

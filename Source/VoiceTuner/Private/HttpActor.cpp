@@ -8,6 +8,7 @@
 #include "Misc/Paths.h"
 #include "CustomizationUI.h"
 #include "Components/WidgetSwitcher.h"
+#include "HSW_NetGameInstance.h"
 
 // Sets default values
 AHttpActor::AHttpActor()
@@ -21,6 +22,10 @@ void AHttpActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	gi = Cast<UHSW_NetGameInstance>(GetGameInstance());
+	if ( gi && !(gi->GetAccessToken().IsEmpty())) {
+		token = gi->GetAccessToken();
+	}
 	CurrentLevelName = GetWorld()->GetMapName();
 	if ( CurrentLevelName == "UEDPIE_0_LoginLevel" ) {
 		if ( LoginUIFactory ) {
@@ -54,7 +59,7 @@ void AHttpActor::LoginRequest(FString id , FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL("http://39.115.91.53:8080/api/auth/login");
+	req->SetURL("http://125.132.216.190:5678/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id , pwd));
@@ -70,7 +75,12 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 		token = UJsonParseLib::TokenJsonParse(Response->GetContentAsString());
 		UE_LOG(LogTemp , Warning , TEXT("token : %s") , *token);
 		UE_LOG(LogTemp , Warning , TEXT("Response : %s") , *Response->GetContentAsString());
-// 		LoginUI->StartWidgetSwitcher->SetActiveWidgetIndex(1);
+		if ( gi && !myID.IsEmpty() && !myPwd.IsEmpty() && !token.IsEmpty() ) {
+			gi->SetID(myID);
+			gi->SetPWD(myPwd);
+			gi->SetAccessToken(token);
+		}
+ 		LoginUI->StartWidgetSwitcher->SetActiveWidgetIndex(1);
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
@@ -81,7 +91,7 @@ void AHttpActor::SendSoundFileToServer()
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://39.115.91.53:8080/api/sendOriginVerse"));
+	Request->SetURL(TEXT("http://125.132.216.190:5678/api/sendOriginVerse"));
 	Request->SetVerb(TEXT("POST"));
 
 	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
@@ -151,7 +161,7 @@ void AHttpActor::SendOriginSoundFileToServer()
 	FHttpModule& httpModule = FHttpModule::Get();
 	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
 
-	req->SetURL("http://39.115.91.53:8080/api/sendOriginVerse");
+	req->SetURL("http://125.132.216.190:5678/api/sendOriginVerse");
 	req->SetVerb("POST");
 	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
 	req->SetHeader(TEXT("accessToken") , FString::Printf(TEXT("%s") , *token));
