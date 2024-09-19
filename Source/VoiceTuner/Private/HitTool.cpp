@@ -6,7 +6,11 @@
 
 #include "HitTool.h"
 
+#include "MusicNote.h"
+#include "PointComponent.h"
+#include "VoiceTunerCharacter.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AHitTool::AHitTool()
@@ -25,6 +29,8 @@ AHitTool::AHitTool()
 	HitMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hit Mesh"));
 	HitMesh -> SetupAttachment(RootComponent);
 	HitMesh -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	HitCollision -> OnComponentBeginOverlap.AddDynamic(this, &AHitTool::OnNoteOverlap);
 }
 
 // Called when the game starts or when spawned
@@ -44,4 +50,23 @@ void AHitTool::Tick(float DeltaTime)
 void AHitTool::ActivationCollision(bool bIsActivated)
 {
 	bIsActivated ? HitCollision -> SetCollisionEnabled(ECollisionEnabled::QueryOnly) : HitCollision -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AHitTool::OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(AMusicNote* MusicNote = Cast<AMusicNote>(OtherActor))
+	{
+		if(AVoiceTunerCharacter* owner =  Cast<AVoiceTunerCharacter>(GetOwner()))
+		{
+			owner -> GetPointComponent() -> AddPoint(500);
+		}
+		
+		if(HitParticle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorLocation());
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Hit!"));
+		Destroy();
+	}
 }
