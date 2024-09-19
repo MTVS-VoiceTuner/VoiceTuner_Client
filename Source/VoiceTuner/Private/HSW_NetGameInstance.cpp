@@ -65,6 +65,10 @@ void UHSW_NetGameInstance::CreateMySession(FString roomName , int32 playerCount)
 	settings.Set(FName("ROOM_NAME") , roomName , EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	settings.Set(FName("HOST_NAME") , MySessionName , EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 
+	//음악파일정보 
+
+	settings.Set(FName("Song_Name") , SongName , EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+
 	FUniqueNetIdPtr netID = GetWorld()->GetFirstLocalPlayerFromController()->GetUniqueNetIdForPlatformUser().GetUniqueNetId();
 
 	SessionInterface->CreateSession(*netID , FName(MySessionName) , settings);
@@ -79,7 +83,7 @@ void UHSW_NetGameInstance::OnMyCreateSessionComplete(FName SessionName , bool bW
 		PRINTLOG(TEXT("OnMyCreateSessionComplete is Success~~~~~"));
 
 		// 서버가 여행을 떠나고싶다.
-		GetWorld()->ServerTravel(TEXT("/Game/HSW/Maps/HSW_Stage?listen"));
+		GetWorld()->ServerTravel(TEXT("/Game/HSW/Maps/HSW_Alpha_MultiStage?listen"));
 	}
 	else
 	{

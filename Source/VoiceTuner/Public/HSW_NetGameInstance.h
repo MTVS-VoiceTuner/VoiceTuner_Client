@@ -17,6 +17,8 @@ struct FRoomInfo
 	UPROPERTY(BlueprintReadOnly)
 	FString hostName;
 	UPROPERTY(BlueprintReadOnly)
+	FString songName;
+	UPROPERTY(BlueprintReadOnly)
 	int32 maxPlayerCount;
 	UPROPERTY(BlueprintReadOnly)
 	int32 currentPlayerCount;
@@ -46,6 +48,8 @@ public:
 	IOnlineSessionPtr SessionInterface;
 
 	FString MySessionName = TEXT("H-SeungWoo");
+	FString WavFilePath;
+	FString SongName;
 	
 	// 号 持失 ================================================
 	//号持失 推短
