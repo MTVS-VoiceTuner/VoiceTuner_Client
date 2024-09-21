@@ -9,6 +9,7 @@
 #include "CustomizationUI.h"
 #include "Components/WidgetSwitcher.h"
 #include "HSW_NetGameInstance.h"
+#include "LoginGameMode.h"
 
 // Sets default values
 AHttpActor::AHttpActor()
@@ -23,11 +24,11 @@ void AHttpActor::BeginPlay()
 	Super::BeginPlay();
 
 	gi = Cast<UHSW_NetGameInstance>(GetGameInstance());
-	if ( gi && !(gi->GetAccessToken().IsEmpty())) {
+	if ( gi && !( gi->GetAccessToken().IsEmpty() ) ) {
 		token = gi->GetAccessToken();
 	}
-	CurrentLevelName = GetWorld()->GetMapName();
-	if ( CurrentLevelName == "UEDPIE_0_LoginLevel" ) {
+	auto* gm = Cast<ALoginGameMode>(GetWorld()->GetAuthGameMode());
+	if ( gm ) {
 		if ( LoginUIFactory ) {
 			LoginUI = CreateWidget<ULoginUI>(GetWorld() , LoginUIFactory);
 			if ( LoginUI ) {
@@ -42,6 +43,7 @@ void AHttpActor::BeginPlay()
 			}
 		}
 	}
+
 }
 
 // Called every frame
@@ -80,7 +82,7 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 			gi->SetPWD(myPwd);
 			gi->SetAccessToken(token);
 		}
- 		LoginUI->StartWidgetSwitcher->SetActiveWidgetIndex(1);
+		LoginUI->StartWidgetSwitcher->SetActiveWidgetIndex(1);
 	}
 	else {
 		UE_LOG(LogTemp , Warning , TEXT("Failed"));
@@ -200,8 +202,8 @@ void AHttpActor::SendUserInfoToDB()
 	TSharedPtr<IHttpRequest> req = httpModule.CreateRequest();
 
 	req->SetVerb("POST");
-	req->SetHeader(TEXT("accessToken"),FString::Printf(TEXT("%s"),*token));
-	req->SetHeader(TEXT("content-type"), TEXT("application/json"));
+	req->SetHeader(TEXT("accessToken") , FString::Printf(TEXT("%s") , *token));
+	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 
 	req->SetContentAsString(UJsonParseLib::MakeUserInfoJson(userInfo));
 
