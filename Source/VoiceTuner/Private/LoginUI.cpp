@@ -47,7 +47,6 @@ void ULoginUI::OnMyButtonClicked()
 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
 		UserIdPrompt->SetKeyboardFocus();
 	}
-	StartWidgetSwitcher->SetActiveWidgetIndex(1);
 	//	RemoveFromParent();
 	// 	auto* pc = GetWorld()->GetFirstPlayerController();
 	// 	if ( pc ) {
@@ -132,6 +131,6 @@ void ULoginUI::OnMyCommitButtonClick()
 	HttpActor->gi->SetStyle(userStyle);
 	HttpActor->gi->SetName(userName);
 
-	FName LobbyLevelName = "HSW_Lobby";
+	FName LobbyLevelName = "HSW_Alpha_Stage";
 	UGameplayStatics::OpenLevel(this , LobbyLevelName);
 }

@@ -92,4 +92,29 @@ public:
 	// 방퇴장 응답
 	void OnMyDestroySessionComplete(FName SessionName , bool bWasSuccessful);
 
+	// 로그인 정보 Set/Get
+	void SetGender(int32 p_GenderCode);
+	int32 GetGender() const;
+	void SetStyle(int32 p_StyleCode);
+	int32 GetSyle() const;
+	void SetAccessToken(FString p_AccessToken);
+	FString GetAccessToken() const;
+	void SetID(FString p_UserID);
+	FString GetID() const;
+	void SetPWD(FString p_UserPWD);
+	FString GetPWD() const;
+	void SetName(FString p_UserName);
+	FString GetName() const;
+
+private:
+	// 로그인 정보
+	FString accessToken;
+	FString userID;
+	FString userPWD;
+	FString userName;
+	int32 styleCode;
+	int32 genderCode;
+
+
+
 };
