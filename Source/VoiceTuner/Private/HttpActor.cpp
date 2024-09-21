@@ -104,7 +104,7 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 	TArray<uint8> FileData;
 
 	UE_LOG(LogTemp , Warning , TEXT("1(), ProcessRequest()"));
-	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName;
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName + TEXT(".wav");
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
 		FString FormData;
