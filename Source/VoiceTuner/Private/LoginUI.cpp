@@ -16,9 +16,6 @@ void ULoginUI::NativeConstruct()
 
 	LoginButton->OnClicked.AddDynamic(this , &ULoginUI::OnMyButtonClicked);
 
-	TestButton->OnClicked.AddDynamic(this , &ULoginUI::OnMyTestButton);
-	TestButton2->OnClicked.AddDynamic(this , &ULoginUI::OnMyTestButton2);
-
 	Button_NameInputClear->OnClicked.AddDynamic(this , &ULoginUI::OnMyClearButtonClick);
 
 	UserIdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyIDCommitted);
@@ -47,23 +44,7 @@ void ULoginUI::OnMyButtonClicked()
 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
 		UserIdPrompt->SetKeyboardFocus();
 	}
-	//	RemoveFromParent();
-	// 	auto* pc = GetWorld()->GetFirstPlayerController();
-	// 	if ( pc ) {
-	// 
-	// 		FInputModeGameOnly InputMode;
-	// 		pc->SetInputMode(InputMode);
-	// 	}
-}
-
-void ULoginUI::OnMyTestButton()
-{
-	HttpActor->SendSoundFileToServer();
-}
-
-void ULoginUI::OnMyTestButton2()
-{
-	HttpActor->SendOriginSoundFileToServer();
+	StartWidgetSwitcher->SetActiveWidgetIndex(1);
 }
 
 void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)
