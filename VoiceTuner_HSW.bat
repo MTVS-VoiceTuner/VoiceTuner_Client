@@ -1,1 +1,0 @@
-"C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor.exe" "C:\Projects\Unreal\VoiceTuner\VoiceTuner.uproject" -game -ResX=600 -ResY=400 -WinX=200 -WinY=300 -log

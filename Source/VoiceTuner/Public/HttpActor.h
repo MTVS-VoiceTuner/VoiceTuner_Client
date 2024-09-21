@@ -41,7 +41,7 @@ public:
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 	
 	UFUNCTION(BlueprintCallable)
-	void SendSoundFileToServer();
+	void SendSoundFileToServer(FString FileName);
 
 	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully); 
 
@@ -66,6 +66,9 @@ public:
 
 	FString CurrentLevelName;
 
+	FString temp;
 
 	TMap<FString , FString> userInfo;
+
+	class UHSW_NetGameInstance* gi;
 };

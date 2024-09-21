@@ -19,15 +19,9 @@ public:
 	UPROPERTY(meta = ( BindWidget ))
 	class UWidgetSwitcher* StartWidgetSwitcher;
 
-	UPROPERTY(meta = ( BindWidget ))
-	class UButton* Button_Commit;
 	// ===============LoginPanel=====================
 	UPROPERTY(meta = ( BindWidget ))
 	class UButton* LoginButton;
-	UPROPERTY(meta = ( BindWidget ))
-	class UButton* TestButton;
-	UPROPERTY(meta = ( BindWidget ))
-	class UButton* TestButton2;
 
 	UPROPERTY(meta = ( BindWidget ))
 	class UEditableText* UserIdPrompt;
@@ -37,10 +31,6 @@ public:
 
 	UFUNCTION()
 	void OnMyButtonClicked();
-	UFUNCTION()
-	void OnMyTestButton();
-	UFUNCTION()
-	void OnMyTestButton2();
 
 	UPROPERTY(EditDefaultsOnly)
 	class AHttpActor* HttpActor;
@@ -68,6 +58,8 @@ public:
 	UPROPERTY(meta = ( BindWidget ))
 	class UButton* Button_NameInputClear;
 
+	UPROPERTY(meta = ( BindWidget ))
+	class UButton* Button_Commit;
 
 	UPROPERTY(meta = ( BindWidget ))
 	class UEditableText* ET_UserNamePrompt;
@@ -105,4 +97,7 @@ public:
 
 	UFUNCTION()
 	void OnMyStyle2ButtonClick();
+
+	UFUNCTION()
+	void OnMyCommitButtonClick();
 };

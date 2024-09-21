@@ -60,6 +60,7 @@ void AHitTool::OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 		if(AVoiceTunerCharacter* owner =  Cast<AVoiceTunerCharacter>(GetOwner()))
 		{
 			owner -> GetPointComponent() -> AddPoint(500);
+			OnHit();
 		}
 		
 		if(HitParticle)
@@ -67,6 +68,6 @@ void AHitTool::OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorLocation());
 		}
 		UE_LOG(LogTemp, Warning, TEXT("Hit!"));
-		Destroy();
+		MusicNote->Destroy();
 	}
 }

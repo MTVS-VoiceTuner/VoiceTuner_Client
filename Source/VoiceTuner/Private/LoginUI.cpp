@@ -7,29 +7,30 @@
 #include "Components/EditableText.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "HSW_NetGameInstance.h"
+#include "Components/WidgetSwitcher.h"
 
 void ULoginUI::NativeConstruct()
 {
-	HttpActor = Cast<AHttpActor>(UGameplayStatics::GetActorOfClass(GetWorld(), HAFactory));
+	HttpActor = Cast<AHttpActor>(UGameplayStatics::GetActorOfClass(GetWorld() , HAFactory));
 
-	LoginButton->OnClicked.AddDynamic(this,&ULoginUI::OnMyButtonClicked);
+	LoginButton->OnClicked.AddDynamic(this , &ULoginUI::OnMyButtonClicked);
 
-	TestButton->OnClicked.AddDynamic(this,&ULoginUI::OnMyTestButton);
-	TestButton2->OnClicked.AddDynamic(this,&ULoginUI::OnMyTestButton2);
-
-	Button_NameInputClear->OnClicked.AddDynamic(this,&ULoginUI::OnMyClearButtonClick);
+	Button_NameInputClear->OnClicked.AddDynamic(this , &ULoginUI::OnMyClearButtonClick);
 
 	UserIdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyIDCommitted);
 
 	UserPwdPrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyPwdCommitted);
 
-	ET_UserNamePrompt->OnTextCommitted.AddDynamic(this,&ULoginUI::OnMyUserNameCommited);
+	ET_UserNamePrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyUserNameCommited);
 
-	Button_Gender_Man->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderMButtonClick);
-	Button_Gender_Woman->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderWButtonClick);
+	Button_Gender_Man->OnClicked.AddDynamic(this , &ULoginUI::OnMyGenderMButtonClick);
+	Button_Gender_Woman->OnClicked.AddDynamic(this , &ULoginUI::OnMyGenderWButtonClick);
 
-	Button_Style_1->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderWButtonClick);
-	Button_Style_2->OnClicked.AddDynamic(this,&ULoginUI::OnMyGenderWButtonClick);
+	Button_Style_1->OnClicked.AddDynamic(this , &ULoginUI::OnMyStyle1ButtonClick);
+	Button_Style_2->OnClicked.AddDynamic(this , &ULoginUI::OnMyStyle2ButtonClick);
+
+	Button_Commit->OnClicked.AddDynamic(this , &ULoginUI::OnMyCommitButtonClick);
 }
 
 void ULoginUI::OnMyButtonClicked()
@@ -43,24 +44,6 @@ void ULoginUI::OnMyButtonClicked()
 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
 		UserIdPrompt->SetKeyboardFocus();
 	}
-
-//	RemoveFromParent();
-// 	auto* pc = GetWorld()->GetFirstPlayerController();
-// 	if ( pc ) {
-// 
-// 		FInputModeGameOnly InputMode;
-// 		pc->SetInputMode(InputMode);
-// 	}
-}
-
-void ULoginUI::OnMyTestButton()
-{
-	HttpActor->SendSoundFileToServer();
-}
-
-void ULoginUI::OnMyTestButton2()
-{
-	HttpActor->SendOriginSoundFileToServer();
 }
 
 void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)
@@ -95,14 +78,14 @@ void ULoginUI::OnMyClearButtonClick()
 void ULoginUI::OnMyGenderMButtonClick()
 {
 	userGender = 1;
-	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.61f,0.65f,0.79f)));
-	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.75f, 0.0f, 0.8f)));
+	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
+	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
 }
 
 void ULoginUI::OnMyGenderWButtonClick()
 {
 	userGender = 2;
-	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.61f, 0.65f, 0.79f)));
+	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
 	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
 }
 
@@ -110,7 +93,7 @@ void ULoginUI::OnMyStyle1ButtonClick()
 {
 	userStyle = 1;
 
-	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.61f , 0.65f , 0.79f)));
+	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
 	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
 }
 
@@ -118,6 +101,16 @@ void ULoginUI::OnMyStyle2ButtonClick()
 {
 	userStyle = 2;
 
-	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.61f , 0.65f , 0.79f)));
+	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
 	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
+}
+
+void ULoginUI::OnMyCommitButtonClick()
+{
+	HttpActor->gi->SetGender(userGender);
+	HttpActor->gi->SetStyle(userStyle);
+	HttpActor->gi->SetName(userName);
+
+	FName LobbyLevelName = "HSW_Alpha_Stage";
+	UGameplayStatics::OpenLevel(this , LobbyLevelName);
 }
