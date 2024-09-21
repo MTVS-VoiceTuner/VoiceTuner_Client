@@ -87,7 +87,7 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 	}
 }
 
-void AHttpActor::SendSoundFileToServer()
+void AHttpActor::SendSoundFileToServer(FString FileName)
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
@@ -102,7 +102,7 @@ void AHttpActor::SendSoundFileToServer()
 	TArray<uint8> FileData;
 
 	UE_LOG(LogTemp , Warning , TEXT("1(), ProcessRequest()"));
-	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong_CUT.wav");
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName;
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
 		FString FormData;
