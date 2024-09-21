@@ -40,7 +40,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
 	void ActivationCollision(bool bIsActivated);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnHit();
 
 	UFUNCTION()
 	void OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
