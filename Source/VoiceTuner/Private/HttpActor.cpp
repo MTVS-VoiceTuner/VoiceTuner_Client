@@ -104,7 +104,8 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 	TArray<uint8> FileData;
 
 	UE_LOG(LogTemp , Warning , TEXT("1(), ProcessRequest()"));
-	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName;
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName; + TEXT(".wav");
+	temp = FileName;
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
 		FString FormData;
@@ -134,7 +135,7 @@ void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpRespons
 	if ( bConnectedSuccessfully ) {
 		UE_LOG(LogTemp , Warning , TEXT("Success : %s") , *Response->GetContentAsString());
 		solution_10 = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
-		FString FilePath = FPaths::ProjectContentDir() + TEXT("solution_10.txt");
+		FString FilePath = FPaths::ProjectContentDir() + temp+TEXT("solution.txt");
 		if ( FFileHelper::SaveStringToFile(solution_10 , *FilePath) )
 		{
 			UE_LOG(LogTemp , Warning , TEXT("save success : %s") , *FilePath);

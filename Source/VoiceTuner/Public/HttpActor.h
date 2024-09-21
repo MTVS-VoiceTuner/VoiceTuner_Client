@@ -66,6 +66,7 @@ public:
 
 	FString CurrentLevelName;
 
+	FString temp;
 
 	TMap<FString , FString> userInfo;
 
