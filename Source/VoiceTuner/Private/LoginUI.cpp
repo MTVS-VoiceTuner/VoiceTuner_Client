@@ -44,7 +44,6 @@ void ULoginUI::OnMyButtonClicked()
 		UserIdPrompt->SetUserFocus(GetWorld()->GetFirstPlayerController());
 		UserIdPrompt->SetKeyboardFocus();
 	}
-	StartWidgetSwitcher->SetActiveWidgetIndex(1);
 }
 
 void ULoginUI::OnMyIDCommitted(const FText& Text , ETextCommit::Type CommitMethod)
