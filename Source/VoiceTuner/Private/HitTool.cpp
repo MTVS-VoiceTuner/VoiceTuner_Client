@@ -68,6 +68,6 @@ void AHitTool::OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorLocation());
 		}
 		UE_LOG(LogTemp, Warning, TEXT("Hit!"));
-		Destroy();
+		MusicNote->Destroy();
 	}
 }
