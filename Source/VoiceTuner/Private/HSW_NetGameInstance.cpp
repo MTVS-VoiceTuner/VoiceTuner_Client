@@ -187,7 +187,7 @@ void UHSW_NetGameInstance::OnMyDestroySessionComplete(FName SessionName , bool b
 	{
 		// 클라이언트가 로비로 여행을 가고싶다.
 		auto* pc = GetWorld()->GetFirstPlayerController();
-		pc->ClientTravel(TEXT("/Game/HSW/Maps/HSW_Lobby") , ETravelType::TRAVEL_Absolute);
+		pc->ClientTravel(TEXT("/Game/TA/Levels/Alpha_Stage") , ETravelType::TRAVEL_Absolute);
 	}
 }
 
