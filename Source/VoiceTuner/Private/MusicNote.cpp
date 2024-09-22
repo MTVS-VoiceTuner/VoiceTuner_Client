@@ -6,7 +6,6 @@
 
 #include "MusicNote.h"
 
-#include "HitTool.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -24,8 +23,6 @@ AMusicNote::AMusicNote()
 	NoteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Note Mesh"));
 	NoteMesh -> SetupAttachment(RootComponent);
 	NoteMesh -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	
-	NoteCollision -> OnComponentBeginOverlap.AddDynamic(this, &AMusicNote::OnNoteOverlap);
 }
 
 // Called when the game starts or when spawned
@@ -47,14 +44,4 @@ void AMusicNote::Move()
 {
 	FVector NewLocation = GetActorLocation() + Speed * GetActorForwardVector() * GetWorld() -> GetDeltaSeconds();
 	SetActorLocation(NewLocation);
-}
-
-
-void AMusicNote::OnNoteOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if(AHitTool* HitTool = Cast<AHitTool>(OtherActor))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit!"));
-		Destroy();
-	}
 }
