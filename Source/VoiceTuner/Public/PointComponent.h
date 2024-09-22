@@ -7,14 +7,14 @@
 #include "PointComponent.generated.h"
 
 
-UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable , ClassGroup = ( Custom ) , meta = ( BlueprintSpawnableComponent ))
 class VOICETUNER_API UPointComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 	int Point = 0;
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UPointComponent();
 
@@ -24,7 +24,9 @@ protected:
 
 public:
 
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE int GetPoint() const { return Point; }
+
 	FORCEINLINE void SetPoint(int NewPoint) { Point = NewPoint; }
 
 	UFUNCTION(BlueprintCallable)

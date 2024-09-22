@@ -3,8 +3,21 @@
 
 #include "ResultWIdget.h"
 #include "Components/TextBlock.h"
+#include "Components/MultiLineEditableTextBox.h"
 
 
+
+void UResultWIdget::NativeTick(const FGeometry& MyGeoMetry , float InDeltaTime)
+{
+	FString FilePath = FPaths::ProjectContentDir() + TEXT("Sinhodeong_CUTsolution.txt");
+	FString LoadText;
+
+	if ( FFileHelper::LoadFileToString(LoadText , *FilePath) ) {
+		if ( TB_FeedBack ) {
+			TB_FeedBack->SetText(FText::FromString(LoadText));
+		}
+	}
+}
 
 void UResultWIdget::SetScore(int32 Score)
 {
