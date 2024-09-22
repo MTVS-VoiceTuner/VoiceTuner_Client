@@ -61,7 +61,7 @@ void AHttpActor::LoginRequest(FString id , FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL("http://125.132.216.190:5679/api/auth/login");
+	req->SetURL("http://125.132.216.190:8989/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id , pwd));
@@ -93,7 +93,7 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://125.132.216.190:5679/api/sendOriginVerse"));
+	Request->SetURL(TEXT("http://125.132.216.190:8989/api/sendSaveSolution"));
 	Request->SetVerb(TEXT("POST"));
 
 	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
