@@ -20,7 +20,10 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* TB_Score;
 
-	void SetScore();
+//	float PlayTime = 23.5;
+
+// 	UPROPERTY(EditDefaultsOnly, meta = ( BindWidgetAnim ),Transient)
+// 	class UWidgetAnimation* LyricsANI;
 
 	int32 point;
 };

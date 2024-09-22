@@ -35,8 +35,8 @@ FString UJsonParseLib::ReturnJsonParse(const FString& json)
 	FString returnValue;
 	if ( FJsonSerializer::Deserialize(reader , result) )
 	{
-		if ( result->HasField("message") ) {
-			FString message = result->GetStringField("message");
+		if ( result->HasField("aiAnswer") ) {
+			FString message = result->GetStringField("aiAnswer");
 			returnValue.Append(FString::Printf(TEXT("%s") , *message));
 		}
 	}

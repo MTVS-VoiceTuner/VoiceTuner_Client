@@ -8,6 +8,8 @@
 
 void ULyricsWidget::NativeTick(const FGeometry& MyGeometry , float InDeltaTime)
 {
+	Super::NativeTick(MyGeometry ,InDeltaTime);
+
 	auto* player = Cast<AVoiceTunerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if ( player ) {
 		TB_Score->SetText(FText::AsNumber(player->GetPointComponent()->GetPoint()));
