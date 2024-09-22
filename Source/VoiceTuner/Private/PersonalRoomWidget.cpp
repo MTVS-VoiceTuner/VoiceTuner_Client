@@ -42,9 +42,7 @@ void UPersonalRoomWidget::NativeConstruct()
 
 void UPersonalRoomWidget::OnMy1OctaveButtonClick()
 {
-	if ( audioActor ) {
-		audioActor->PlayAudio(genderCode , 1);
-	}
+	audioActor->PlayAudio(genderCode , 1);
 }
 
 void UPersonalRoomWidget::OnMy2OctaveButtonClick()
@@ -234,6 +232,7 @@ void UPersonalRoomWidget::OnClicked3OctaveButton()
 
 void UPersonalRoomWidget::OnClickRepeat()
 {
+	audioActor->StopAudio();
 	UTexture2D* ButtonImage;
 	if ( bIsRClicked ) {
 		bIsRClicked = false;
@@ -308,6 +307,7 @@ void UPersonalRoomWidget::OnClickScale()
 
 void UPersonalRoomWidget::OnClickAIAnalyze()
 {
+	audioActor->StopAudio();
 	UTexture2D* ButtonImage;
 	if ( bIsAClicked ) {
 		bIsAClicked = false;
