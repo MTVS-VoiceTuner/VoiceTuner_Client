@@ -15,10 +15,14 @@ class VOICETUNER_API UResultWIdget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	virtual void NativeTick(const FGeometry& MyGeoMetry, float InDeltaTime) override;
+
+	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* TB_Score;
 
 	UFUNCTION(BlueprintCallable)
 	void SetScore(int32 Score);
 
+	UPROPERTY(meta = (BindWidget))
+	class UMultiLineEditableTextBox* TB_FeedBack;
 };
