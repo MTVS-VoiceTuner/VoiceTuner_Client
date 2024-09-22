@@ -42,7 +42,9 @@ void UPersonalRoomWidget::NativeConstruct()
 
 void UPersonalRoomWidget::OnMy1OctaveButtonClick()
 {
-	audioActor->PlayAudio(genderCode , 1);
+	if ( audioActor ) {
+		audioActor->PlayAudio(genderCode , 1);
+	}
 }
 
 void UPersonalRoomWidget::OnMy2OctaveButtonClick()
