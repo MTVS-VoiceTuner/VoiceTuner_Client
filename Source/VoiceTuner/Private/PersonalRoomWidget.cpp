@@ -232,7 +232,7 @@ void UPersonalRoomWidget::OnClicked3OctaveButton()
 
 void UPersonalRoomWidget::OnClickRepeat()
 {
-	audioActor->StopAudio();
+	if(audioActor ) audioActor->StopAudio();
 	UTexture2D* ButtonImage;
 	if ( bIsRClicked ) {
 		bIsRClicked = false;
