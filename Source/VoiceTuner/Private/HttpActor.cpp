@@ -104,13 +104,14 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 	TArray<uint8> FileData;
 
 	UE_LOG(LogTemp , Warning , TEXT("1(), ProcessRequest()"));
-	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName; + TEXT(".wav");
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName + TEXT(".wav");
 	temp = FileName;
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
 		FString FormData;
 		FormData += FString::Printf(TEXT("--%s\r\n") , *Boundary);
-		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"Sinhodeong_CUT.wav\"\r\n");
+		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"");
+		FormData += FileName +  TEXT(".wav\"\r\n"); //gi->GetName() +
 		FormData += TEXT("content-Type: audio/wav\r\n\r\n");
 
 		TArray<uint8> Body;
