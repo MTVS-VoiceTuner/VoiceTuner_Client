@@ -111,6 +111,6 @@ void ULoginUI::OnMyCommitButtonClick()
 	HttpActor->gi->SetStyle(userStyle);
 	HttpActor->gi->SetName(userName);
 
-	FName LobbyLevelName = "HSW_Alpha_Stage";
+	FName LobbyLevelName = "Alpha_Stage";
 	UGameplayStatics::OpenLevel(this , LobbyLevelName);
 }

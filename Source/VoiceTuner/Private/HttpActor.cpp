@@ -61,7 +61,7 @@ void AHttpActor::LoginRequest(FString id , FString pwd)
 	myID = id;
 	myPwd = pwd;
 
-	req->SetURL("http://192.168.0.44:8080/api/auth/login");
+	req->SetURL("http://125.132.216.190:8989/api/auth/login");
 	req->SetVerb(TEXT("POST"));
 	req->SetHeader(TEXT("content-type") , TEXT("application/json"));
 	req->SetContentAsString(UJsonParseLib::MakeLoginInfoJson(id , pwd));
@@ -93,7 +93,7 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://192.168.0.44:8080/api/sendOriginVerse"));
+	Request->SetURL(TEXT("http://125.132.216.190:8989/api/sendSaveSolution"));
 	Request->SetVerb(TEXT("POST"));
 
 	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
@@ -110,8 +110,7 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 	{
 		FString FormData;
 		FormData += FString::Printf(TEXT("--%s\r\n") , *Boundary);
-		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"");
-		FormData += FileName +  TEXT(".wav\"\r\n"); //gi->GetName() +
+		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"Sinhodeong_CUT.wav\"\r\n");
 		FormData += TEXT("content-Type: audio/wav\r\n\r\n");
 
 		TArray<uint8> Body;
