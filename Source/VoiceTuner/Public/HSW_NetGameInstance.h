@@ -29,13 +29,13 @@ struct FRoomInfo
 
 	FString ToString()
 	{
-		return FString::Printf(TEXT("%d)[%s][%s] (%d / %d) -> %dms"), index, *roomName, *hostName, currentPlayerCount, maxPlayerCount, pingMS);
+		return FString::Printf(TEXT("%d)[%s][%s] (%d / %d) -> %dms") , index , *roomName , *hostName , currentPlayerCount , maxPlayerCount , pingMS);
 	}
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSearchSignature , const struct FRoomInfo& , info);
 /**
- * 
+ *
  */
 UCLASS()
 class VOICETUNER_API UHSW_NetGameInstance : public UGameInstance
@@ -50,15 +50,15 @@ public:
 	FString MySessionName = TEXT("H-SeungWoo");
 	FString WavFilePath;
 	FString SongName;
-	
+
 	// 방 생성 ================================================
 	//방생성 요청
 	UFUNCTION()
-	void CreateMySession(FString roomName, int32 playerCount);
+	void CreateMySession(FString roomName , int32 playerCount);
 
 	// 방생성 응답
 	UFUNCTION()
-	void OnMyCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+	void OnMyCreateSessionComplete(FName SessionName , bool bWasSuccessful);
 
 	// 방 검색 ===================================================
 	// 찾을 방의 목록
@@ -83,10 +83,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ExitSession();
 
-	UFUNCTION(Server, Reliable)
+	UFUNCTION(Server , Reliable)
 	void ServerRPCExitSession();
 
-	UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION(NetMulticast , Reliable)
 	void MulticastRPCExitSession();
 
 	// 방퇴장 응답
@@ -94,6 +94,7 @@ public:
 
 	// 로그인 정보 Set/Get
 	void SetGender(int32 p_GenderCode);
+	UFUNCTION(BlueprintCallable)
 	int32 GetGender() const;
 	void SetStyle(int32 p_StyleCode);
 	int32 GetSyle() const;
@@ -104,6 +105,7 @@ public:
 	void SetPWD(FString p_UserPWD);
 	FString GetPWD() const;
 	void SetName(FString p_UserName);
+	UFUNCTION(BlueprintCallable)
 	FString GetName() const;
 
 private:
