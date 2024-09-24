@@ -167,7 +167,7 @@ void AHttpActor::SendOriginSoundFileToServer(const FString& FileName)
 	UE_LOG(LogTemp , Warning , TEXT("1(), ProcessRequest()"));
 	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName + TEXT(".wav");
 	temp_Long = FileName;
-	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
+	if ( FFileHelper::LoadFileToArray(FileData , *FilePath))
 	{
 		FString FormData;
 		FormData += FString::Printf(TEXT("--%s\r\n") , *Boundary);
