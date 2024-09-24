@@ -41,12 +41,12 @@ public:
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 	
 	UFUNCTION(BlueprintCallable)
-	void SendSoundFileToServer(FString FileName);
+	void SendSoundFileToServer(const FString& FileName);
 
 	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully); 
 
 	UFUNCTION(BlueprintCallable)
- 	void SendOriginSoundFileToServer();
+ 	void SendOriginSoundFileToServer(const FString& FileName);
  
  	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
@@ -66,7 +66,8 @@ public:
 
 	FString CurrentLevelName;
 
-	FString temp;
+	FString temp_Short;
+	FString temp_Long;
 
 	TMap<FString , FString> userInfo;
 

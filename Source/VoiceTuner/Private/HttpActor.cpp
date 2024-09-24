@@ -89,11 +89,11 @@ void AHttpActor::ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Resp
 	}
 }
 
-void AHttpActor::SendSoundFileToServer(FString FileName)
+void AHttpActor::SendSoundFileToServer(const FString& FileName)
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://125.132.216.190:8989/api/sendSaveSolution"));
+	Request->SetURL(TEXT("http://125.132.216.190:8989/api/sendOriginVerse"));
 	Request->SetVerb(TEXT("POST"));
 
 	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
@@ -105,7 +105,7 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 
 	UE_LOG(LogTemp , Warning , TEXT("1(), ProcessRequest()"));
 	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName + TEXT(".wav");
-	temp = FileName;
+	temp_Short = FileName;
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
 		FString FormData;
@@ -126,7 +126,7 @@ void AHttpActor::SendSoundFileToServer(FString FileName)
 		Request->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
 
 		Request->ProcessRequest();
-		UE_LOG(LogTemp , Warning , TEXT("SendSoundFileToServer(), ProcessRequest()"));
+		UE_LOG(LogTemp , Warning , TEXT("SendSoundFileToServer() -  ProcessRequest()"));
 	}
 }
 
@@ -135,7 +135,7 @@ void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpRespons
 	if ( bConnectedSuccessfully ) {
 		UE_LOG(LogTemp , Warning , TEXT("Success : %s") , *Response->GetContentAsString());
 		solution_10 = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
-		FString FilePath = FPaths::ProjectContentDir() + temp+TEXT("solution.txt");
+		FString FilePath = FPaths::ProjectContentDir() + temp_Short + TEXT("_solution.txt");
 		if ( FFileHelper::SaveStringToFile(solution_10 , *FilePath) )
 		{
 			UE_LOG(LogTemp , Warning , TEXT("save success : %s") , *FilePath);
@@ -150,39 +150,52 @@ void AHttpActor::ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpRespons
 	}
 }
 
-void AHttpActor::SendOriginSoundFileToServer()
+void AHttpActor::SendOriginSoundFileToServer(const FString& FileName)
 {
-	TArray<uint8> audio_file;
-	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/Sinhodeong.wav");
-	if ( !FFileHelper::LoadFileToArray(audio_file , *FilePath) )
+	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
+
+	Request->SetURL(TEXT("http://125.132.216.190:8989/api/sendSaveSolution"));
+	Request->SetVerb(TEXT("POST"));
+
+	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
+
+	Request->SetHeader(TEXT("accessToken") , FString::Printf(TEXT("%s") , *token));
+	Request->SetHeader(TEXT("content-type") , TEXT("multipart/form-data; boundary=") + Boundary);
+
+	TArray<uint8> FileData;
+
+	UE_LOG(LogTemp , Warning , TEXT("1(), ProcessRequest()"));
+	FString FilePath = FPaths::ProjectSavedDir() + TEXT("/BouncedWavFiles/") + FileName + TEXT(".wav");
+	temp_Long = FileName;
+	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
-		UE_LOG(LogTemp , Error , TEXT("Failed to load file: %s") , *FilePath);
-		return;
+		FString FormData;
+		FormData += FString::Printf(TEXT("--%s\r\n") , *Boundary);
+		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"Sinhodeong_CUT.wav\"\r\n");
+		FormData += TEXT("content-Type: audio/wav\r\n\r\n");
+
+		TArray<uint8> Body;
+		Body.Append((uint8*)TCHAR_TO_UTF8(*FormData) , FormData.Len());
+		Body.Append(FileData);
+
+		FString EndBoundary = TEXT("\r\n--") + Boundary + TEXT("--\r\n");
+		Body.Append((uint8*)TCHAR_TO_UTF8(*EndBoundary) , EndBoundary.Len());
+
+		Request->SetContent(Body);
+
+		Request->SetHeader(TEXT("content-length") , FString::FromInt(Body.Num()));
+		Request->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendOriginSoundFileToServer);
+
+		Request->ProcessRequest();
+		UE_LOG(LogTemp , Warning , TEXT("SendSoundOriginFileToServer() - ProcessRequest()"));
 	}
-	else {
-		UE_LOG(LogTemp , Verbose , TEXT("Successed to load file: %s") , *FilePath);
-	}
-
-	FHttpModule& httpModule = FHttpModule::Get();
-	TSharedRef<IHttpRequest> req = httpModule.CreateRequest();
-
-	req->SetURL("http://125.132.216.190:8080/api/sendOriginVerse");
-	req->SetVerb("POST");
-	req->SetHeader(TEXT("User-Agent") , "UnrealEngine/5.0");
-	req->SetHeader(TEXT("accessToken") , FString::Printf(TEXT("%s") , *token));
-	req->SetHeader(TEXT("content-type") , TEXT("multipart/form-data"));
-	req->SetContent(audio_file);
-
-	req->OnProcessRequestComplete().BindUObject(this , &AHttpActor::ResSendSoundFileToServer);
-
-	req->ProcessRequest();
 }
 
 void AHttpActor::ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully)
 {
 	if ( bConnectedSuccessfully ) {
 		solution_10 = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
-		FString FilePath = FPaths::ProjectContentDir() + "solution_10.txt";
+		FString FilePath = FPaths::ProjectContentDir() + temp_Long + "_solution.txt";
 		if ( FFileHelper::SaveStringToFile(solution_10 , *FilePath) )
 		{
 			UE_LOG(LogTemp , Warning , TEXT("파일 저장 성공: %s") , *FilePath);

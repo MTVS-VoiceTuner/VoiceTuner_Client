@@ -6,6 +6,9 @@
 #include "Animation/WidgetAnimation.h"
 #include "Components/Image.h"
 #include "Engine/Texture2D.h"
+#include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
+#include "Components/TextBlock.h"
 
 void UMainUI::NativeConstruct()
 {
