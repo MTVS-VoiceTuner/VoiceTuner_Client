@@ -76,3 +76,6 @@ DerivedDataCache/*
 *.idea
 VoiceTuner_HSW.bat
 VoiceTuner.bat
+Saved/BouncedWavFiles/*
+Content/Sinhodeong_CUTsolution.txt
+Content/Sinhodeong_Longsolution.txt
