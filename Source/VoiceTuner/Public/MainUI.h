@@ -91,4 +91,9 @@ public:
 	bool bSoundOff = false;
 	bool bMicOff = false;
 
+	// 상대방 플레이어들의 이름을 우측 상단에 보이게 하고싶다..
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* txt_users;
+
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 };

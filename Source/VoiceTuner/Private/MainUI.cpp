@@ -6,6 +6,9 @@
 #include "Animation/WidgetAnimation.h"
 #include "Components/Image.h"
 #include "Engine/Texture2D.h"
+#include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
+#include "Components/TextBlock.h"
 
 void UMainUI::NativeConstruct()
 {
@@ -169,6 +172,23 @@ void UMainUI::OnMySetUnHoverd()
 	}
 	UTexture2D* HoverSetImg = LoadObject<UTexture2D>(nullptr , TEXT("/Script/Engine.Texture2D'/Game/YHJ/LOGIN/GUI002v/Basic/Group_17.Group_17'"));
 	ICON_Setting->SetBrushFromTexture(HoverSetImg);
+}
+
+void UMainUI::NativeTick(const FGeometry& MyGeometry , float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry,InDeltaTime);
+
+	// 다른 플레이어들의 정보를 알고싶다.
+	
+	TArray<TObjectPtr<APlayerState>> users = GetWorld()->GetGameState()->PlayerArray;
+
+	// 다른 플레이어들의 이름을 다 모아서 출력하고싶다.
+	FString names;
+	for ( APlayerState* user : users )
+	{
+		names.Append(FString::Printf(TEXT("%s\n"),*user->GetPlayerName()));
+	}
+	txt_users->SetText(FText::FromString(names));
 }
 
 
