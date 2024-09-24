@@ -90,5 +90,5 @@ public:
 
 	bool bSoundOff = false;
 	bool bMicOff = false;
-
 };
+
