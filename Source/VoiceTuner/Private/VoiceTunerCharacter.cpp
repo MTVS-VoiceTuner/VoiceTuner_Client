@@ -138,6 +138,7 @@ void AVoiceTunerCharacter::Look(const FInputActionValue& Value)
 
 void AVoiceTunerCharacter::VoiceChat(const FInputActionValue& Value)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Voice Chat"));
 	bCanVoiceChat = !bCanVoiceChat;
 	if( bCanVoiceChat )	GetController<APlayerController>()->StartTalking();
 	else GetController<APlayerController>()->StopTalking();
