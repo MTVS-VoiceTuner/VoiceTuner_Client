@@ -40,8 +40,6 @@ public:
 	void OnClickRepeat();
 	UFUNCTION()
 	void OnClickScale();
-	UFUNCTION()
-	void OnClickAIAnalyze();
 
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
 	class UButton* PlayButton_1Octave;
