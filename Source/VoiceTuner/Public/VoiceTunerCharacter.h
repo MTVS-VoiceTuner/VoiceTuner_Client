@@ -74,7 +74,7 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
-	bool bCanVoiceChat;
+	bool bCanVoiceChat = true;
 
 public:
 	/** Returns CameraBoom subobject **/
