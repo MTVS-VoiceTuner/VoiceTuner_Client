@@ -89,6 +89,10 @@ void AVoiceTunerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AVoiceTunerCharacter::Look);
+
+		EnhancedInputComponent->BindAction(VoiceChatAction , ETriggerEvent::Started , this , &AVoiceTunerCharacter::Look);
+
+		EnhancedInputComponent->BindAction(VoiceChatAction , ETriggerEvent::Started , this , &AVoiceTunerCharacter::VoiceChat);
 	}
 	else
 	{
@@ -131,3 +135,11 @@ void AVoiceTunerCharacter::Look(const FInputActionValue& Value)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
+
+void AVoiceTunerCharacter::VoiceChat(const FInputActionValue& Value)
+{
+	bCanVoiceChat = !bCanVoiceChat;
+	if( bCanVoiceChat )	GetController<APlayerController>()->StartTalking();
+	else GetController<APlayerController>()->StopTalking();
+}
+
