@@ -94,7 +94,8 @@ public:
 
 	UPROPERTY(meta = ( BindWidget ))
 	class UImage* Img_Custom;
-
+	
+	UFUNCTION()
 	void SetCustomImage(int32 gender , int32 style);
 
 	UPROPERTY(EditDefaultsOnly)

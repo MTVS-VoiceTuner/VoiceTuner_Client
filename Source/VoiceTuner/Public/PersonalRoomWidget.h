@@ -81,7 +81,13 @@ public:
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
 	class UButton* Button_Repeat;
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
-	class UButton* Button_Scale;
+	class UButton* Button_Scale; 
+
+	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
+	class UButton* Button_Back;
+
+	UFUNCTION()
+	void OnCancelButtonClick();
 
 	int32 genderCode;
 
@@ -97,6 +103,7 @@ public:
 	bool bIsRClicked = false;
 	bool bIsSClicked = false;
 	bool bIsAClicked = false;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class APersonalRoomAudio> PRAFactory;
 

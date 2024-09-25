@@ -7,6 +7,7 @@
 #include "PersonalRoomAudio.h"
 #include "Engine/Texture2D.h"
 #include "Styling/SlateBrush.h"
+#include "BGMAudioActor.h"
 
 void UPersonalRoomWidget::NativeConstruct()
 {
@@ -37,6 +38,9 @@ void UPersonalRoomWidget::NativeConstruct()
 
 	Button_Repeat->OnClicked.AddDynamic(this , &UPersonalRoomWidget::OnClickRepeat);
 	Button_Scale->OnClicked.AddDynamic(this , &UPersonalRoomWidget::OnClickScale);
+
+
+	Button_Back->OnClicked.AddDynamic(this , &UPersonalRoomWidget::OnCancelButtonClick);
 }
 
 void UPersonalRoomWidget::OnMy1OctaveButtonClick()
@@ -231,7 +235,7 @@ void UPersonalRoomWidget::OnClicked3OctaveButton()
 
 void UPersonalRoomWidget::OnClickRepeat()
 {
-	if(audioActor ) audioActor->StopAudio();
+	if ( audioActor ) audioActor->StopAudio();
 	UTexture2D* ButtonImage;
 	if ( bIsRClicked ) {
 		bIsRClicked = false;
@@ -278,11 +282,16 @@ void UPersonalRoomWidget::OnClickScale()
 		Button_Repeat->SetStyle(ButtonStyle);
 		bIsRClicked = false;
 	}
-
 	NewBrush.SetResourceObject(ButtonImage);
 
 	FButtonStyle ButtonStyle = Button_Scale->WidgetStyle;
 	ButtonStyle.SetNormal(NewBrush);
 
 	Button_Scale->SetStyle(ButtonStyle);
+}
+
+void UPersonalRoomWidget::OnCancelButtonClick()
+{
+	this->SetVisibility(ESlateVisibility::Hidden);
+	audioActor->StopAudio();
 }

@@ -233,10 +233,11 @@ void AHttpActor::SendSoundFileToServerTest(const FString& FileName)
 	if ( FFileHelper::LoadFileToArray(FileData , *FilePath) )
 	{
 		FString FormData;
-		FormData += "--" + Boundary + "\r\n";
-		FormData += "Content-Disposition: form-data; name=\"json\"\r\n\r\n";
-		FormData += JsonData + "\r\n";
+//  	FormData += "--" + Boundary + "\r\n";
+//  	FormData += "Content-Disposition: form-data; name=\"json\"\r\n\r\n";
+//  	FormData += JsonData + "\r\n";
 		FormData += FString::Printf(TEXT("--%s\r\n") , *Boundary);
+		FormData += JsonData + "\r\n";
 		FormData += TEXT("Content-Disposition: form-data; name=\"audio_file\"; filename=\"Sinhodeong_CUT.wav\"\r\n");
 		FormData += TEXT("content-Type: audio/wav\r\n\r\n");
 
@@ -262,7 +263,7 @@ void AHttpActor::ResSendSoundFileToServerTest(FHttpRequestPtr Request , FHttpRes
 	if ( bConnectedSuccessfully ) {
 		UE_LOG(LogTemp,Warning,TEXT("TEST_Response"));
 		solution_10 = UJsonParseLib::ReturnJsonParse(Response->GetContentAsString());
-		FString FilePath = FPaths::ProjectContentDir() + temp_Long + "_solution.txt";
+		FString FilePath = FPaths::ProjectContentDir() + temp_Short + "_solution.txt";
 		if ( FFileHelper::SaveStringToFile(solution_10 , *FilePath) )
 		{
 			UE_LOG(LogTemp , Warning , TEXT("파일 저장 성공: %s") , *FilePath);

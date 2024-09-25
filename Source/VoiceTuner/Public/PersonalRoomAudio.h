@@ -19,9 +19,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	class ABGMAudioActor* bgmAudio;
 
 	UFUNCTION(BlueprintCallable , Category = "Audio")
 	void PlayAudio(int32 gender, int32 octave);
@@ -29,6 +32,9 @@ public:
 	// Function to stop the audio
 	UFUNCTION(BlueprintCallable , Category = "Audio")
 	void StopAudio();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ABGMAudioActor> BGMAudioFactory;
 private:
 
 	UPROPERTY()
@@ -44,4 +50,6 @@ private:
 	class USoundWave* WomanOctave2;
 	UPROPERTY(EditAnywhere , Category = "Audio")
 	class USoundWave* WomanOctave3;
+
+
 };
