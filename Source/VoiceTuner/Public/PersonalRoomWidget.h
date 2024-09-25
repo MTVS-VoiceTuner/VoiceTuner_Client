@@ -84,8 +84,6 @@ public:
 	class UButton* Button_Repeat;
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
 	class UButton* Button_Scale;
-	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
-	class UButton* Button_AI;
 
 	int32 genderCode;
 
