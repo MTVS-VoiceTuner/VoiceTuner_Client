@@ -6,6 +6,8 @@
 #include "OnlineSessionSettings.h"
 #include "VoiceTuner.h"
 #include "../../../../Plugins/Online/OnlineBase/Source/Public/Online/OnlineSessionNames.h"
+#include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
 
 void UHSW_NetGameInstance::Init()
 {
@@ -189,27 +191,6 @@ void UHSW_NetGameInstance::OnMyDestroySessionComplete(FName SessionName , bool b
 		auto* pc = GetWorld()->GetFirstPlayerController();
 		pc->ClientTravel(TEXT("/Game/TA/Levels/Alpha_Stage") , ETravelType::TRAVEL_Absolute);
 	}
-}
-
-
-void UHSW_NetGameInstance::SetGender(int32 p_GenderCode)
-{
-	genderCode = p_GenderCode;
-}
-
-int32 UHSW_NetGameInstance::GetGender() const
-{
-	return	genderCode;
-}
-
-void UHSW_NetGameInstance::SetStyle(int32 p_StyleCode)
-{
-	styleCode = p_StyleCode;
-}
-
-int32 UHSW_NetGameInstance::GetSyle() const
-{
-	return styleCode;
 }
 
 void UHSW_NetGameInstance::SetAccessToken(FString p_AccessToken)

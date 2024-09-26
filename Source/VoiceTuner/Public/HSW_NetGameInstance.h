@@ -93,11 +93,6 @@ public:
 	void OnMyDestroySessionComplete(FName SessionName , bool bWasSuccessful);
 
 	// 로그인 정보 Set/Get
-	void SetGender(int32 p_GenderCode);
-	UFUNCTION(BlueprintCallable)
-	int32 GetGender() const;
-	void SetStyle(int32 p_StyleCode);
-	int32 GetSyle() const;
 	void SetAccessToken(FString p_AccessToken);
 	FString GetAccessToken() const;
 	void SetID(FString p_UserID);
@@ -107,13 +102,11 @@ public:
 	void SetName(FString p_UserName);
 	UFUNCTION(BlueprintCallable)
 	FString GetName() const;
-
+	
 private:
 	// 로그인 정보
 	FString accessToken;
 	FString userID;
 	FString userPWD;
-	FString userName = "abc";
-	int32 styleCode;
-	int32 genderCode;
+	FString userName;
 };
