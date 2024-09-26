@@ -33,5 +33,5 @@ void UResultWIdget::SetScore(int32 Score)
 
 void UResultWIdget::OnClickFeedBackButton()
 {
-	UKismetSystemLibrary::LaunchURL("http://192.168.0.44:8989/");
+	UKismetSystemLibrary::LaunchURL("http://125.132.216.190:8989/");
 }

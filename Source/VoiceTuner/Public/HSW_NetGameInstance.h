@@ -116,7 +116,4 @@ private:
 	FString userName = "abc";
 	int32 styleCode;
 	int32 genderCode;
-
-
-
 };
