@@ -84,7 +84,7 @@ void UHSW_NetGameInstance::OnMyCreateSessionComplete(FName SessionName , bool bW
 
 		// 서버가 여행을 떠나고싶다.
 		//GetWorld()->ServerTravel(TEXT("/Game/HSW/Maps/HSW_Alpha_MultiStage?listen"));
-		GetWorld()->ServerTravel(TEXT("/Game/TA/Levels/Alpha_Stage?listen"));
+		GetWorld()->ServerTravel(TEXT("/Game/TA/Levels/Multi_Stage?listen"));
 	}
 	else
 	{
