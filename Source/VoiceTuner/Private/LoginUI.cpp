@@ -25,12 +25,6 @@ void ULoginUI::NativeConstruct()
 
 	ET_UserNamePrompt->OnTextCommitted.AddDynamic(this , &ULoginUI::OnMyUserNameCommited);
 
-	Button_Gender_Man->OnClicked.AddDynamic(this , &ULoginUI::OnMyGenderMButtonClick);
-	Button_Gender_Woman->OnClicked.AddDynamic(this , &ULoginUI::OnMyGenderWButtonClick);
-
-	Button_Style_1->OnClicked.AddDynamic(this , &ULoginUI::OnMyStyle1ButtonClick);
-	Button_Style_2->OnClicked.AddDynamic(this , &ULoginUI::OnMyStyle2ButtonClick);
-
 	Button_Commit->OnClicked.AddDynamic(this , &ULoginUI::OnMyCommitButtonClick);
 }
 
@@ -76,67 +70,14 @@ void ULoginUI::OnMyClearButtonClick()
 	ET_UserNamePrompt->SetText(FText::FromString(""));
 }
 
-void ULoginUI::OnMyGenderMButtonClick()
-{
-	userGender = 1;
-	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
-	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
-	SetCustomImage(userGender , userStyle);
-}
-
-void ULoginUI::OnMyGenderWButtonClick()
-{
-	userGender = 2;
-	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
-	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
-	SetCustomImage(userGender , userStyle);
-}
-
-void ULoginUI::OnMyStyle1ButtonClick()
-{
-	userStyle = 1;
-
-	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
-	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
-	SetCustomImage(userGender , userStyle);
-}
-
-void ULoginUI::OnMyStyle2ButtonClick()
-{
-	userStyle = 2;
-
-	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
-	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
-	SetCustomImage(userGender , userStyle);
-}
 
 void ULoginUI::OnMyCommitButtonClick()
 {
-	HttpActor->gi->SetGender(userGender);
-	HttpActor->gi->SetStyle(userStyle);
-	HttpActor->gi->SetName(userName);
-
+	auto* gi = Cast<UHSW_NetGameInstance>(GetWorld()->GetGameInstance());
+	if ( gi ) gi->SetName(userName);
 	FName LobbyLevelName = "Alpha_Stage";
 	UGameplayStatics::OpenLevel(this , LobbyLevelName);
 }
 
-void ULoginUI::SetCustomImage(int32 gender , int32 style)
-{
-	if ( gender == 1 ) {
-		if ( style == 1 ) {
-			Img_Custom->SetBrushFromMaterial(man1);
-		}
-		else {
-			Img_Custom->SetBrushFromMaterial(man2);
-		}
-	}
-	else {
-		if ( style == 1 ) {
-			Img_Custom->SetBrushFromMaterial(woman1);
-		}
-		else {
-			Img_Custom->SetBrushFromMaterial(woman2);
-		}
-	}
-}
+
 

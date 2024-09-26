@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "GameFramework/PlayerState.h"
 #include "LyricsWidget.generated.h"
 
 /**
@@ -17,13 +18,9 @@ class VOICETUNER_API ULyricsWidget : public UUserWidget
 public:
 
 	virtual void NativeTick(const FGeometry& MyGeometry , float InDeltaTime) override;
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = ( BindWidget ))
 	class UTextBlock* TB_Score;
 
-//	float PlayTime = 23.5;
-
-// 	UPROPERTY(EditDefaultsOnly, meta = ( BindWidgetAnim ),Transient)
-// 	class UWidgetAnimation* LyricsANI;
-
 	int32 point;
+
 };
