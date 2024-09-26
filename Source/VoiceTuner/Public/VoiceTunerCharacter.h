@@ -48,6 +48,9 @@ class AVoiceTunerCharacter : public ACharacter
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = PointComponent, meta = (AllowPrivateAccess = "true"))
 	UPointComponent* PointComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* VoiceChatAction;
+
 public:
 	AVoiceTunerCharacter();
 	
@@ -59,6 +62,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	void VoiceChat(const FInputActionValue& Value);
+
 			
 
 protected:
@@ -67,6 +73,8 @@ protected:
 	
 	// To add mapping context
 	virtual void BeginPlay();
+
+	bool bCanVoiceChat = true;
 
 public:
 	/** Returns CameraBoom subobject **/

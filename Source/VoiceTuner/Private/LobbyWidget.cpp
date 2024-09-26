@@ -71,7 +71,7 @@ void ULobbyWidget::CR_OnClickCreateRoom()
 
 void ULobbyWidget::CR_OnChangeSliderPlayerCount(float value)
 {
-	CR_Text_PlayerCount->SetText(FText::AsNumber(value));
+	CR_Text_PlayerCount->SetText(FText::AsNumber((int32)value));
 }
 
 void ULobbyWidget::FS_OnClickFindSessions()
