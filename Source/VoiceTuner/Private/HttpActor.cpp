@@ -93,7 +93,7 @@ void AHttpActor::SendSoundFileToServer(const FString& FileName)
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://125.132.216.190:5679/api/sendOriginVerse"));
+	Request->SetURL(TEXT("http://125.132.216.190:8989/api/sendOriginVerse"));
 	Request->SetVerb(TEXT("POST"));
 
 	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
@@ -154,7 +154,7 @@ void AHttpActor::SendOriginSoundFileToServer(const FString& FileName)
 {
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://125.132.216.190:5679/api/sendSaveSolution"));
+	Request->SetURL(TEXT("http://125.132.216.190:8989/api/sendSaveSolution"));
 	Request->SetVerb(TEXT("POST"));
 
 	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");
@@ -216,7 +216,7 @@ void AHttpActor::SendSoundFileToServerTest(const FString& FileName)
 	UE_LOG(LogTemp , Warning , TEXT("TEST_Send"));
 	TSharedRef<IHttpRequest , ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 
-	Request->SetURL(TEXT("http://125.132.216.190:5679/api/saveSolutionTest"));
+	Request->SetURL(TEXT("http://125.132.216.190:8989/api/saveSolutionTest"));
 	Request->SetVerb(TEXT("POST"));
 
 	FString Boundary = TEXT("----WebKitFormBoundary7MA4YWxkTrZu0gW");

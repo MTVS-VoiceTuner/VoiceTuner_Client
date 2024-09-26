@@ -4,8 +4,15 @@
 #include "ResultWIdget.h"
 #include "Components/TextBlock.h"
 #include "Components/MultiLineEditableTextBox.h"
+#include "Components/Button.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
+
+void UResultWIdget::NativeConstruct()
+{
+	Button_ReqAIFeedBack->OnClicked.AddDynamic(this,&UResultWIdget::OnClickFeedBackButton);
+}
 
 void UResultWIdget::NativeTick(const FGeometry& MyGeoMetry , float InDeltaTime)
 {
@@ -22,4 +29,9 @@ void UResultWIdget::NativeTick(const FGeometry& MyGeoMetry , float InDeltaTime)
 void UResultWIdget::SetScore(int32 Score)
 {
 	TB_Score->SetText(FText::AsNumber(Score));
+}
+
+void UResultWIdget::OnClickFeedBackButton()
+{
+	UKismetSystemLibrary::LaunchURL("http://192.168.0.44:8989/");
 }

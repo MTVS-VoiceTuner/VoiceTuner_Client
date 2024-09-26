@@ -55,7 +55,6 @@ public:
 
 	void ResSendSoundFileToServerTest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
-	FString serverURL = "http://192.168.0.25:8080/sendBase64";
 	FString token;
 	FString myID = "shinhonggyu";
 	FString myPwd;

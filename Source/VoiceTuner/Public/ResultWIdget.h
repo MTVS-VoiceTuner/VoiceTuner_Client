@@ -15,6 +15,7 @@ class VOICETUNER_API UResultWIdget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeoMetry, float InDeltaTime) override;
 
 	UPROPERTY(meta = (BindWidget))
@@ -25,4 +26,10 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UMultiLineEditableTextBox* TB_FeedBack;
+
+	UPROPERTY(meta=(BindWidget))
+	class UButton* Button_ReqAIFeedBack;
+
+	UFUNCTION()
+	void OnClickFeedBackButton();
 };
