@@ -16,7 +16,7 @@ void UResultWIdget::NativeConstruct()
 
 void UResultWIdget::NativeTick(const FGeometry& MyGeoMetry , float InDeltaTime)
 {
-	FString FilePath = FPaths::ProjectContentDir() + TEXT("Sinhodeong_CUTsolution.txt");
+	FString FilePath = FPaths::ProjectContentDir() + TEXT("Sinhodeong_CUT_solution.txt");
 	FString LoadText;
 
 	if ( FFileHelper::LoadFileToString(LoadText , *FilePath) ) {

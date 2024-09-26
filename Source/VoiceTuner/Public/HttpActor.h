@@ -50,11 +50,6 @@ public:
 
 	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
-	UFUNCTION(BlueprintCallable)
-	void SendSoundFileToServerTest(const FString& FileName);
-
-	void ResSendSoundFileToServerTest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
-
 	FString token;
 	FString myID = "shinhonggyu";
 	FString myPwd;
