@@ -9,6 +9,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
 #include "Components/TextBlock.h"
+#include "LoginGameMode.h"
 
 void UMainUI::NativeConstruct()
 {
@@ -35,6 +36,8 @@ void UMainUI::NativeConstruct()
 
 void UMainUI::OnMyHZHoverd()
 {
+	auto* gm = Cast<ALoginGameMode>(GetWorld()->GetAuthGameMode());
+	if ( gm ) return;
 	if ( MouseHover && !bGPUp ) {
 		PlayAnimation(MouseHover);
 		bGPUp = true;

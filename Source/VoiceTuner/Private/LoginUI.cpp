@@ -9,6 +9,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "HSW_NetGameInstance.h"
 #include "Components/WidgetSwitcher.h"
+#include "Components/Image.h"
 
 void ULoginUI::NativeConstruct()
 {
@@ -80,6 +81,7 @@ void ULoginUI::OnMyGenderMButtonClick()
 	userGender = 1;
 	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
 	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
+	SetCustomImage(userGender , userStyle);
 }
 
 void ULoginUI::OnMyGenderWButtonClick()
@@ -87,6 +89,7 @@ void ULoginUI::OnMyGenderWButtonClick()
 	userGender = 2;
 	Button_Gender_Man->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
 	Button_Gender_Woman->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
+	SetCustomImage(userGender , userStyle);
 }
 
 void ULoginUI::OnMyStyle1ButtonClick()
@@ -95,6 +98,7 @@ void ULoginUI::OnMyStyle1ButtonClick()
 
 	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
 	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
+	SetCustomImage(userGender , userStyle);
 }
 
 void ULoginUI::OnMyStyle2ButtonClick()
@@ -103,6 +107,7 @@ void ULoginUI::OnMyStyle2ButtonClick()
 
 	Button_Style_1->SetBackgroundColor(FLinearColor(FVector3d(0.612992f , 0.651344f , 0.791667f)));
 	Button_Style_2->SetBackgroundColor(FLinearColor(FVector3d(0.75f , 0.0f , 0.8f)));
+	SetCustomImage(userGender , userStyle);
 }
 
 void ULoginUI::OnMyCommitButtonClick()
@@ -114,3 +119,24 @@ void ULoginUI::OnMyCommitButtonClick()
 	FName LobbyLevelName = "Alpha_Stage";
 	UGameplayStatics::OpenLevel(this , LobbyLevelName);
 }
+
+void ULoginUI::SetCustomImage(int32 gender , int32 style)
+{
+	if ( gender == 1 ) {
+		if ( style == 1 ) {
+			Img_Custom->SetBrushFromMaterial(man1);
+		}
+		else {
+			Img_Custom->SetBrushFromMaterial(man2);
+		}
+	}
+	else {
+		if ( style == 1 ) {
+			Img_Custom->SetBrushFromMaterial(woman1);
+		}
+		else {
+			Img_Custom->SetBrushFromMaterial(woman2);
+		}
+	}
+}
+

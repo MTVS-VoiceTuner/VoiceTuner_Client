@@ -56,21 +56,19 @@ FString UJsonParseLib::MakeLoginInfoJson(FString id , FString pwd)
 	return json;
 }
 
-
-FString UJsonParseLib::MakeSoundFileDate(FString user_id , FString song_id , FString track_id , float start_time , float end_time , FString audio_data)
+FString UJsonParseLib::MakeSoundFileDate(long user_id , long song_id)
 {
 	TSharedPtr<FJsonObject> jsonObject = MakeShareable(new FJsonObject());
 
-	jsonObject->SetStringField("user_id" , *user_id);
-	jsonObject->SetStringField("song_id" , *song_id);
-	jsonObject->SetStringField("track_id" , *track_id);
-	jsonObject->SetNumberField("start_time" , start_time);
-	jsonObject->SetNumberField("end_time" , end_time);
-	jsonObject->SetStringField("audio_data" , *audio_data);
+	jsonObject->SetNumberField("user_id" , user_id);
+	jsonObject->SetNumberField("song_id" , song_id);
 
+	TSharedPtr<FJsonObject> rootObject = MakeShareable(new FJsonObject());
+
+	rootObject->SetObjectField("voice-info", jsonObject);
 	FString json;
 	TSharedRef<TJsonWriter<TCHAR>> writer = TJsonWriterFactory<TCHAR>::Create(&json);
-	FJsonSerializer::Serialize(jsonObject.ToSharedRef() , writer);
+	FJsonSerializer::Serialize(rootObject.ToSharedRef() , writer);
 
 	return json;
 }

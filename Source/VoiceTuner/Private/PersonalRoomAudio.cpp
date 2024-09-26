@@ -4,6 +4,8 @@
 #include "PersonalRoomAudio.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundWave.h"
+#include "BGMAudioActor.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APersonalRoomAudio::APersonalRoomAudio()
@@ -35,7 +37,7 @@ APersonalRoomAudio::APersonalRoomAudio()
 	if ( TempSoundWave1.Succeeded() ) {
 		WomanOctave3 = TempSoundWave5.Object;
 	}
-
+	bgmAudio = Cast<ABGMAudioActor>(UGameplayStatics::GetActorOfClass(GetWorld() , BGMAudioFactory));
 }
 
 // Called when the game starts or when spawned
@@ -54,6 +56,10 @@ void APersonalRoomAudio::Tick(float DeltaTime)
 
 void APersonalRoomAudio::PlayAudio(int32 gender , int32 octave)
 {
+	if ( bgmAudio != nullptr ) {
+		bgmAudio->StopAudio();
+	}
+
 	if ( AudioComp == nullptr ) return;
 
 	if ( octave == 1 && Octave1 ) {
@@ -88,6 +94,8 @@ void APersonalRoomAudio::StopAudio()
 {
 	if ( AudioComp && AudioComp->IsPlaying() )
 	{
+		if ( bgmAudio != nullptr ) bgmAudio->PlayAudio();
+
 		AudioComp->Stop();
 	}
 }

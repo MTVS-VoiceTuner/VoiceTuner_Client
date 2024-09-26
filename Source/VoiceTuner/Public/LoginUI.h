@@ -65,24 +65,15 @@ public:
 	class UEditableText* ET_UserNamePrompt;
 
 
-	UPROPERTY(meta = ( BindWidget ))
-	class UImage* Img_Man_Style1;
-	UPROPERTY(meta = ( BindWidget ))
-	class UImage* Img_Man_Style2;
-	UPROPERTY(meta = ( BindWidget ))
-	class UImage* Img_Woman_Style1;
-	UPROPERTY(meta = ( BindWidget ))
-	class UImage* Img_Woman_Style2;
-
 	UFUNCTION()
 	void OnMyUserNameCommited(const FText& Text , ETextCommit::Type CommitMethod);
 
 	FString userName;
 
 	// 1 : 남자 2 : 여자
-	int32 userGender;
+	int32 userGender = 1;
 	// 1 or 2
-	int32 userStyle;
+	int32 userStyle = 1;
 
 	UFUNCTION()
 	void OnMyClearButtonClick();
@@ -100,4 +91,19 @@ public:
 
 	UFUNCTION()
 	void OnMyCommitButtonClick();
+
+	UPROPERTY(meta = ( BindWidget ))
+	class UImage* Img_Custom;
+	
+	UFUNCTION()
+	void SetCustomImage(int32 gender , int32 style);
+
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterial* man1;
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterial* man2;
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterial* woman1;
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterial* woman2;
 };

@@ -7,6 +7,7 @@
 #include "PersonalRoomAudio.h"
 #include "Engine/Texture2D.h"
 #include "Styling/SlateBrush.h"
+#include "BGMAudioActor.h"
 
 void UPersonalRoomWidget::NativeConstruct()
 {
@@ -35,9 +36,11 @@ void UPersonalRoomWidget::NativeConstruct()
 
 	audioActor = Cast<APersonalRoomAudio>(UGameplayStatics::GetActorOfClass(GetWorld() , PRAFactory));
 
-	Button_AI->OnClicked.AddDynamic(this , &UPersonalRoomWidget::OnClickAIAnalyze);
 	Button_Repeat->OnClicked.AddDynamic(this , &UPersonalRoomWidget::OnClickRepeat);
 	Button_Scale->OnClicked.AddDynamic(this , &UPersonalRoomWidget::OnClickScale);
+
+
+	Button_Back->OnClicked.AddDynamic(this , &UPersonalRoomWidget::OnCancelButtonClick);
 }
 
 void UPersonalRoomWidget::OnMy1OctaveButtonClick()
@@ -232,7 +235,7 @@ void UPersonalRoomWidget::OnClicked3OctaveButton()
 
 void UPersonalRoomWidget::OnClickRepeat()
 {
-	if(audioActor ) audioActor->StopAudio();
+	if ( audioActor ) audioActor->StopAudio();
 	UTexture2D* ButtonImage;
 	if ( bIsRClicked ) {
 		bIsRClicked = false;
@@ -250,15 +253,6 @@ void UPersonalRoomWidget::OnClickRepeat()
 
 		Button_Scale->SetStyle(ButtonStyle);
 		bIsSClicked = false;
-	}
-	if ( bIsAClicked ) {
-		FSlateBrush tempBrush;
-		tempBrush.SetResourceObject(LoadObject<UTexture2D>(nullptr , TEXT("/Script/Engine.Texture2D'/Game/SHK/resource/Personal_Room/Song_repeat_Practice/AIAnalyze.AIAnalyze'")));
-		FButtonStyle ButtonStyle = Button_AI->WidgetStyle;
-		ButtonStyle.SetNormal(tempBrush);
-
-		Button_AI->SetStyle(ButtonStyle);
-		bIsAClicked = false;
 	}
 	NewBrush.SetResourceObject(ButtonImage);
 
@@ -288,15 +282,6 @@ void UPersonalRoomWidget::OnClickScale()
 		Button_Repeat->SetStyle(ButtonStyle);
 		bIsRClicked = false;
 	}
-	if ( bIsAClicked ) {
-		FSlateBrush tempBrush;
-		tempBrush.SetResourceObject(LoadObject<UTexture2D>(nullptr , TEXT("/Script/Engine.Texture2D'/Game/SHK/resource/Personal_Room/Song_repeat_Practice/AIAnalyze.AIAnalyze'")));
-		FButtonStyle ButtonStyle = Button_AI->WidgetStyle;
-		ButtonStyle.SetNormal(tempBrush);
-
-		Button_AI->SetStyle(ButtonStyle);
-		bIsAClicked = false;
-	}
 	NewBrush.SetResourceObject(ButtonImage);
 
 	FButtonStyle ButtonStyle = Button_Scale->WidgetStyle;
@@ -305,40 +290,8 @@ void UPersonalRoomWidget::OnClickScale()
 	Button_Scale->SetStyle(ButtonStyle);
 }
 
-void UPersonalRoomWidget::OnClickAIAnalyze()
+void UPersonalRoomWidget::OnCancelButtonClick()
 {
+	this->SetVisibility(ESlateVisibility::Hidden);
 	audioActor->StopAudio();
-	UTexture2D* ButtonImage;
-	if ( bIsAClicked ) {
-		bIsAClicked = false;
-		ButtonImage = LoadObject<UTexture2D>(nullptr , TEXT("/Script/Engine.Texture2D'/Game/SHK/resource/Personal_Room/Song_repeat_Practice/AIAnalyze.AIAnalyze'"));
-	}
-	else {
-		bIsAClicked = true;
-		ButtonImage = LoadObject<UTexture2D>(nullptr , TEXT("/Script/Engine.Texture2D'/Game/SHK/resource/Personal_Room/Song_repeat_Practice/AIAnalyze_Selected.AIAnalyze_Selected'"));
-	}
-	if ( bIsRClicked ) {
-		FSlateBrush tempBrush;
-		tempBrush.SetResourceObject(LoadObject<UTexture2D>(nullptr , TEXT("/Script/Engine.Texture2D'/Game/SHK/resource/Personal_Room/Song_repeat_Practice/RepeatPractice.RepeatPractice'")));
-		FButtonStyle ButtonStyle = Button_Repeat->WidgetStyle;
-		ButtonStyle.SetNormal(tempBrush);
-
-		Button_Repeat->SetStyle(ButtonStyle);
-		bIsRClicked = false;
-	}
-	if ( bIsSClicked ) {
-		FSlateBrush tempBrush;
-		tempBrush.SetResourceObject(LoadObject<UTexture2D>(nullptr , TEXT("/Script/Engine.Texture2D'/Game/SHK/resource/Personal_Room/Song_repeat_Practice/ScalePractice.ScalePractice'")));
-		FButtonStyle ButtonStyle = Button_Scale->WidgetStyle;
-		ButtonStyle.SetNormal(tempBrush);
-
-		Button_Scale->SetStyle(ButtonStyle);
-		bIsSClicked = false;
-	}
-	NewBrush.SetResourceObject(ButtonImage);
-
-	FButtonStyle ButtonStyle = Button_AI->WidgetStyle;
-	ButtonStyle.SetNormal(NewBrush);
-
-	Button_AI->SetStyle(ButtonStyle);
 }

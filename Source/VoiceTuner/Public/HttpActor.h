@@ -12,15 +12,15 @@ UCLASS()
 class VOICETUNER_API AHttpActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AHttpActor();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-public:	
+public:
 	// Called every frame2
 	virtual void Tick(float DeltaTime) override;
 
@@ -36,26 +36,25 @@ public:
 
 
 
-	void LoginRequest(FString id, FString pwd);
+	void LoginRequest(FString id , FString pwd);
 
 	void ResLoginRequest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
-	
+
 	UFUNCTION(BlueprintCallable)
 	void SendSoundFileToServer(const FString& FileName);
 
-	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully); 
+	void ResSendSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
 	UFUNCTION(BlueprintCallable)
- 	void SendOriginSoundFileToServer(const FString& FileName);
- 
- 	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+	void SendOriginSoundFileToServer(const FString& FileName);
 
-	void SendUserInfoToDB();
+	void ResSendOriginSoundFileToServer(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
+	UFUNCTION(BlueprintCallable)
+	void SendSoundFileToServerTest(const FString& FileName);
 
-	void ResSendUserInfoToDB(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
+	void ResSendSoundFileToServerTest(FHttpRequestPtr Request , FHttpResponsePtr Response , bool bConnectedSuccessfully);
 
-	FString serverURL = "http://192.168.0.25:8080/sendBase64";
 	FString token;
 	FString myID = "shinhonggyu";
 	FString myPwd;

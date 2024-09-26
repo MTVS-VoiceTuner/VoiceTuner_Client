@@ -113,7 +113,7 @@ private:
 	FString accessToken;
 	FString userID;
 	FString userPWD;
-	FString userName;
+	FString userName = "abc";
 	int32 styleCode;
 	int32 genderCode;
 

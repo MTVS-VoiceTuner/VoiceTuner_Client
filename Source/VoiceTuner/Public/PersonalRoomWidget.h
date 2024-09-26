@@ -40,8 +40,6 @@ public:
 	void OnClickRepeat();
 	UFUNCTION()
 	void OnClickScale();
-	UFUNCTION()
-	void OnClickAIAnalyze();
 
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
 	class UButton* PlayButton_1Octave;
@@ -83,9 +81,13 @@ public:
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
 	class UButton* Button_Repeat;
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
-	class UButton* Button_Scale;
+	class UButton* Button_Scale; 
+
 	UPROPERTY(BlueprintReadWrite , meta = ( BindWidget ))
-	class UButton* Button_AI;
+	class UButton* Button_Back;
+
+	UFUNCTION()
+	void OnCancelButtonClick();
 
 	int32 genderCode;
 
@@ -101,6 +103,7 @@ public:
 	bool bIsRClicked = false;
 	bool bIsSClicked = false;
 	bool bIsAClicked = false;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class APersonalRoomAudio> PRAFactory;
 

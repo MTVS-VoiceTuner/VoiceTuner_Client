@@ -21,7 +21,7 @@ public:
 
 	static FString MakeLoginInfoJson(FString id , FString pwd);
 
-	static FString MakeSoundFileDate(FString user_id , FString song_id , FString track_id , float start_time , float end_time , FString audio_data);
+	static FString MakeSoundFileDate(long user_id , long song_id);
 
 	static FString MakeUserInfoJson(const TMap<FString , FString> source);
 };
