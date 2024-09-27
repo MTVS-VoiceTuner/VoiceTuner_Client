@@ -16,14 +16,13 @@ void UResultWIdget::NativeConstruct()
 
 void UResultWIdget::NativeTick(const FGeometry& MyGeoMetry , float InDeltaTime)
 {
-	FString FilePath = FPaths::ProjectContentDir() + TEXT("Sinhodeong_CUT_solution.txt");
-	FString LoadText;
-
-	if ( FFileHelper::LoadFileToString(LoadText , *FilePath) ) {
-		if ( TB_FeedBack ) {
-			TB_FeedBack->SetText(FText::FromString(LoadText));
-		}
-	}
+	Super::NativeTick(MyGeoMetry,InDeltaTime);
+// 	FString FilePath = FPaths::ProjectContentDir() + TEXT("Sinhodeong_CUT_solution.txt");
+// 	FString LoadText;
+// 
+// 	if ( FFileHelper::LoadFileToString(LoadText , *FilePath) ) {
+// 	
+// 	}
 }
 
 void UResultWIdget::SetScore(int32 Score)
@@ -33,5 +32,5 @@ void UResultWIdget::SetScore(int32 Score)
 
 void UResultWIdget::OnClickFeedBackButton()
 {
-	UKismetSystemLibrary::LaunchURL("http://125.132.216.190:8989/");
+	UKismetSystemLibrary::LaunchURL("http://125.132.216.190:5679/");
 }

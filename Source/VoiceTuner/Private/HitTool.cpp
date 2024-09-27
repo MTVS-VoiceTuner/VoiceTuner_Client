@@ -59,7 +59,7 @@ void AHitTool::OnNoteOverlap(UPrimitiveComponent* OverlappedComponent , AActor* 
 	{
 		if ( AVoiceTunerCharacter* owner = Cast<AVoiceTunerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn()) )
 		{
-			owner->GetPointComponent()->AddPoint(500);
+			owner->GetPointComponent()->AddPoint(50);
 			OnHit();
 		}
 
